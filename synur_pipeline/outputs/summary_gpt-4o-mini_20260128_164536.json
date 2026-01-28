@@ -1,0 +1,21 @@
+{
+  "timestamp": "20260128_164536",
+  "llm_model": "gpt-4o-mini",
+  "embedding_model": "text-embedding-3-small",
+  "temperature": 0.0,
+  "top_n_schema_rows": 60,
+  "use_paper_prompts": true,
+  "use_enhanced_prompts": false,
+  "few_shot": false,
+  "num_few_shot_examples": 0,
+  "segmentation": "simple",
+  "partial_credit": false,
+  "num_transcripts": 5,
+  "limit": 5,
+  "true_positives": 50.0,
+  "false_positives": 117.0,
+  "false_negatives": 12.0,
+  "precision": 0.2994011976047904,
+  "recall": 0.8064516129032258,
+  "f1": 0.43668122270742354
+}

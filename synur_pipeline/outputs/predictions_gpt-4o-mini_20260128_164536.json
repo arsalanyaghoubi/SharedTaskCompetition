@@ -1,0 +1,1448 @@
+[
+  {
+    "id": "41",
+    "predictions": [
+      {
+        "id": "3",
+        "name": "Respiratory interventions",
+        "value_type": "MULTI_SELECT",
+        "value": [
+          "raising head of bed",
+          "deep breathe",
+          "incentive spirometer usage"
+        ]
+      },
+      {
+        "id": "67",
+        "name": "Dyspnea",
+        "value_type": "SINGLE_SELECT",
+        "value": "Moderate"
+      },
+      {
+        "id": "116",
+        "name": "Work of breathing",
+        "value_type": "SINGLE_SELECT",
+        "value": "Increased"
+      },
+      {
+        "id": "38",
+        "name": "Use of accessory muscles",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "125",
+        "name": "Sensory symptoms",
+        "value_type": "MULTI_SELECT",
+        "value": [
+          "Numbness and tingling in lower extremities"
+        ]
+      },
+      {
+        "id": "51",
+        "name": "Pain severity",
+        "value_type": "SINGLE_SELECT",
+        "value": "4 out of 10"
+      },
+      {
+        "id": "167",
+        "name": "Pain description",
+        "value_type": "STRING",
+        "value": "overall discomfort"
+      },
+      {
+        "id": "0",
+        "name": "Broset violence checklist - confusion",
+        "value": "Yes"
+      },
+      {
+        "id": "115",
+        "name": "Broset violence checklist - irritability",
+        "value": "Yes"
+      },
+      {
+        "id": "130",
+        "name": "Cognitive status",
+        "value": "Alert with general confusion and forgetfulness"
+      },
+      {
+        "id": "26",
+        "name": "Delirium symptoms",
+        "value": "acute confusional state, possible hypoxemia or metabolic issue"
+      },
+      {
+        "id": "99",
+        "name": "Urine odor",
+        "value_type": "SINGLE_SELECT",
+        "value": {
+          "id": "99",
+          "value": "foul"
+        }
+      }
+    ],
+    "gold": [
+      {
+        "id": "38",
+        "value_type": "SINGLE_SELECT",
+        "name": "Use of accessory muscles",
+        "value": "Yes"
+      },
+      {
+        "id": "116",
+        "value_type": "SINGLE_SELECT",
+        "name": "Work of breathing",
+        "value": "Increased"
+      },
+      {
+        "id": "113",
+        "value_type": "SINGLE_SELECT",
+        "name": "Bed position",
+        "value": "raised"
+      },
+      {
+        "id": "136",
+        "value_type": "SINGLE_SELECT",
+        "name": "Respiratory equipment",
+        "value": "incentive spirometer"
+      },
+      {
+        "id": "0",
+        "value_type": "SINGLE_SELECT",
+        "name": "Broset violence checklist - confusion",
+        "value": "Yes"
+      },
+      {
+        "id": "115",
+        "value_type": "SINGLE_SELECT",
+        "name": "Broset violence checklist - irritability",
+        "value": "Yes"
+      },
+      {
+        "id": "31",
+        "value_type": "STRING",
+        "name": "Secondary diagnosis",
+        "value": "hypoxemia or metabolic issue"
+      },
+      {
+        "id": "99",
+        "value_type": "SINGLE_SELECT",
+        "name": "Urine odor",
+        "value": "foul"
+      },
+      {
+        "id": "67",
+        "value_type": "SINGLE_SELECT",
+        "name": "Dyspnea",
+        "value": "Moderate"
+      },
+      {
+        "id": "3",
+        "value_type": "MULTI_SELECT",
+        "name": "Respiratory interventions",
+        "value": [
+          "deep breathe",
+          "raising head of bed",
+          "incentive spirometer usage"
+        ]
+      },
+      {
+        "id": "125",
+        "value_type": "MULTI_SELECT",
+        "name": "Sensory symptoms",
+        "value": [
+          "Numbness and tingling in lower extremities"
+        ]
+      },
+      {
+        "id": "130",
+        "value_type": "SINGLE_SELECT",
+        "name": "Cognitive status",
+        "value": "Alert with general confusion and forgetfulness"
+      }
+    ],
+    "single_result": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75
+    }
+  },
+  {
+    "id": "14",
+    "predictions": [
+      {
+        "id": "130",
+        "name": "Cognitive status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Alert with general confusion and forgetfulness"
+      },
+      {
+        "id": "10",
+        "name": "Oxygen saturation",
+        "value_type": "NUMERIC",
+        "value": 83
+      },
+      {
+        "id": "26",
+        "name": "Delirium symptoms",
+        "value_type": "STRING",
+        "value": "acute confusion and pneumonia, disoriented and irritable"
+      },
+      {
+        "id": "67",
+        "name": "Dyspnea",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "0",
+        "name": "Broset violence checklist - confusion",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "178",
+        "name": "Oxygen saturation unit",
+        "value_type": "SINGLE_SELECT",
+        "value": "%"
+      },
+      {
+        "id": "181",
+        "name": "Pulse oximetry unit",
+        "value_type": "SINGLE_SELECT",
+        "value": "%"
+      },
+      {
+        "id": "34",
+        "name": "Pulse oximetry",
+        "value_type": "NUMERIC",
+        "value": 83
+      },
+      {
+        "id": "93",
+        "name": "Oxygen delivery device",
+        "value_type": "SINGLE_SELECT",
+        "value": "nasal cannula"
+      },
+      {
+        "id": "117",
+        "name": "Patient safety",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "116",
+        "name": "Work of breathing",
+        "value_type": "SINGLE_SELECT",
+        "value": "Normal"
+      },
+      {
+        "id": "110",
+        "name": "Glasgow coma score - best verbal response",
+        "value_type": "SINGLE_SELECT",
+        "value": "confused"
+      },
+      {
+        "id": "82",
+        "name": "Central line site condition",
+        "value_type": "SINGLE_SELECT",
+        "value": "Intact"
+      },
+      {
+        "id": "77",
+        "name": "Memory status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Impaired"
+      },
+      {
+        "id": "56",
+        "name": "Mental status",
+        "value_type": "SINGLE_SELECT",
+        "value": "3"
+      },
+      {
+        "id": "107",
+        "name": "Fall risk identification",
+        "value_type": "SINGLE_SELECT",
+        "value": "High"
+      },
+      {
+        "id": "136",
+        "name": "Respiratory equipment",
+        "value_type": "SINGLE_SELECT",
+        "value": "incentive spirometer"
+      },
+      {
+        "id": "146",
+        "name": "Patient position",
+        "value_type": "SINGLE_SELECT",
+        "value": "sitting"
+      },
+      {
+        "id": "173",
+        "name": "Tracheostomy status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Absent"
+      },
+      {
+        "id": "48",
+        "name": "Clinician notification",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "187",
+        "name": "Fraction of inspired oxygen (FiO2) unit",
+        "value_type": "SINGLE_SELECT",
+        "value": "%"
+      },
+      {
+        "id": "39",
+        "name": "Communication sensory",
+        "value_type": "SINGLE_SELECT",
+        "value": "Inappropriate communication is present but less severe"
+      },
+      {
+        "id": "36",
+        "name": "Gastrointestinal status",
+        "value_type": "SINGLE_SELECT",
+        "value": "within normal limits"
+      },
+      {
+        "id": "176",
+        "name": "Pressure injury stage",
+        "value_type": "SINGLE_SELECT",
+        "value": "Unstageable"
+      },
+      {
+        "id": "135",
+        "name": "Glasgow coma score - eye opening",
+        "value_type": "SINGLE_SELECT",
+        "value": "to speech"
+      },
+      {
+        "id": "95",
+        "name": "Peripheral IV site condition",
+        "value_type": "SINGLE_SELECT",
+        "value": "Intact"
+      },
+      {
+        "id": "98",
+        "name": "Intravenous therapy",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "105",
+        "name": "Catheter condition",
+        "value_type": "SINGLE_SELECT",
+        "value": "Intact"
+      },
+      {
+        "id": "189",
+        "name": "Oxygen flow rate unit",
+        "value_type": "SINGLE_SELECT",
+        "value": "L/min"
+      },
+      {
+        "id": "118",
+        "name": "Patient safety education",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "25",
+        "name": "Nutrition status",
+        "value_type": "SINGLE_SELECT",
+        "value": "inadequate"
+      },
+      {
+        "id": "120",
+        "name": "Fall risk assessment",
+        "value_type": "SINGLE_SELECT",
+        "value": "Morse fall risk assessment"
+      },
+      {
+        "id": "175",
+        "name": "Activity level",
+        "value_type": "SINGLE_SELECT",
+        "value": "bed rest"
+      },
+      {
+        "id": "115",
+        "name": "Broset violence checklist - irritability",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "140",
+        "name": "Nasal discharge",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "45",
+        "name": "Pitting edema",
+        "value_type": "SINGLE_SELECT",
+        "value": "1+"
+      },
+      {
+        "id": "124",
+        "name": "General physical exam",
+        "value_type": "SINGLE_SELECT",
+        "value": "within defined limits"
+      },
+      {
+        "id": "83",
+        "name": "Facial droop",
+        "value_type": "SINGLE_SELECT",
+        "value": "no facial droop"
+      },
+      {
+        "id": "58",
+        "name": "Capillary refill",
+        "value_type": "SINGLE_SELECT",
+        "value": "less than 3 seconds"
+      },
+      {
+        "id": "32",
+        "name": "Constipation episode",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "65",
+        "name": "Fluid restriction",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "99",
+        "name": "Urine odor",
+        "value_type": "SINGLE_SELECT",
+        "value": "foul"
+      },
+      {
+        "id": "182",
+        "name": "Respirations unit",
+        "value_type": "SINGLE_SELECT",
+        "value": "breaths per minute"
+      },
+      {
+        "id": "41",
+        "name": "Speech clarity",
+        "value_type": "SINGLE_SELECT",
+        "value": "slurred"
+      },
+      {
+        "id": "151",
+        "name": "Edema",
+        "value_type": "SINGLE_SELECT",
+        "value": "No edema"
+      },
+      {
+        "id": "30",
+        "name": "Nausea",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "61",
+        "name": "Perineal edema",
+        "value_type": "SINGLE_SELECT",
+        "value": "Absent"
+      },
+      {
+        "id": "165",
+        "name": "Breath sounds",
+        "value_type": "MULTI_SELECT",
+        "value": [
+          "diminished"
+        ]
+      },
+      {
+        "id": "72",
+        "name": "Respirations",
+        "value_type": "NUMERIC",
+        "value": 28
+      },
+      {
+        "id": "170",
+        "name": "Cough description",
+        "value_type": "SINGLE_SELECT",
+        "value": "productive cough"
+      },
+      {
+        "id": "159",
+        "name": "Bed alarm status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Activated"
+      },
+      {
+        "id": "164",
+        "name": "Level of assistance",
+        "value_type": "SINGLE_SELECT",
+        "value": "moderate assist"
+      },
+      {
+        "id": "109",
+        "name": "Assistance with toileting",
+        "value_type": "SINGLE_SELECT",
+        "value": "none"
+      },
+      {
+        "id": "78",
+        "name": "History of falls",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "132",
+        "name": "Joint deformity",
+        "value_type": "SINGLE_SELECT",
+        "value": "Mild"
+      }
+    ],
+    "gold": [
+      {
+        "id": "130",
+        "value_type": "SINGLE_SELECT",
+        "name": "Cognitive status",
+        "value": "Alert with general confusion and forgetfulness"
+      },
+      {
+        "id": "31",
+        "value_type": "STRING",
+        "name": "Secondary diagnosis",
+        "value": "pneumonia"
+      },
+      {
+        "id": "26",
+        "value_type": "STRING",
+        "name": "Delirium symptoms",
+        "value": "signs of delirium"
+      },
+      {
+        "id": "40",
+        "value_type": "SINGLE_SELECT",
+        "name": "Orientation",
+        "value": "disoriented"
+      },
+      {
+        "id": "115",
+        "value_type": "SINGLE_SELECT",
+        "name": "Broset violence checklist - irritability",
+        "value": "Yes"
+      },
+      {
+        "id": "10",
+        "value_type": "NUMERIC",
+        "name": "Oxygen saturation",
+        "value": 83
+      },
+      {
+        "id": "178",
+        "value_type": "SINGLE_SELECT",
+        "name": "Oxygen saturation unit",
+        "value": "%"
+      },
+      {
+        "id": "170",
+        "value_type": "SINGLE_SELECT",
+        "name": "Cough description",
+        "value": "productive cough"
+      },
+      {
+        "id": "165",
+        "value_type": "MULTI_SELECT",
+        "name": "Breath sounds",
+        "value": [
+          "diminished"
+        ]
+      },
+      {
+        "id": "93",
+        "value_type": "SINGLE_SELECT",
+        "name": "Oxygen delivery device",
+        "value": "nasal cannula"
+      },
+      {
+        "id": "72",
+        "value_type": "NUMERIC",
+        "name": "Respirations",
+        "value": 28
+      },
+      {
+        "id": "182",
+        "value_type": "SINGLE_SELECT",
+        "name": "Respirations unit",
+        "value": "breaths per minute"
+      },
+      {
+        "id": "159",
+        "value_type": "SINGLE_SELECT",
+        "name": "Bed alarm status",
+        "value": "Activated"
+      },
+      {
+        "id": "107",
+        "value_type": "SINGLE_SELECT",
+        "name": "Fall risk identification",
+        "value": "High"
+      },
+      {
+        "id": "78",
+        "value_type": "SINGLE_SELECT",
+        "name": "History of falls",
+        "value": "Yes"
+      },
+      {
+        "id": "132",
+        "value_type": "SINGLE_SELECT",
+        "name": "Joint deformity",
+        "value": "Mild"
+      },
+      {
+        "id": "164",
+        "value_type": "SINGLE_SELECT",
+        "name": "Level of assistance",
+        "value": "moderate assist"
+      },
+      {
+        "id": "117",
+        "value_type": "SINGLE_SELECT",
+        "name": "Patient safety",
+        "value": "Yes"
+      }
+    ],
+    "single_result": {
+      "precision": 0.2727272727272727,
+      "recall": 0.8333333333333334,
+      "f1": 0.4109589041095891
+    }
+  },
+  {
+    "id": "139",
+    "predictions": [
+      {
+        "id": "130",
+        "name": "Cognitive status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Alert with general confusion and forgetfulness"
+      },
+      {
+        "id": "26",
+        "name": "Delirium symptoms",
+        "value_type": "STRING",
+        "value": "early signs of delirium or maybe a reaction to some other issues going on"
+      },
+      {
+        "id": "56",
+        "name": "Mental status",
+        "value_type": "SINGLE_SELECT",
+        "value": "3"
+      },
+      {
+        "id": "110",
+        "name": "Glasgow coma score - best verbal response",
+        "value_type": "SINGLE_SELECT",
+        "value": "confused"
+      },
+      {
+        "id": "0",
+        "name": "Broset violence checklist - confusion",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "135",
+        "name": "Glasgow coma score - eye opening",
+        "value_type": "SINGLE_SELECT",
+        "value": "spontaneous"
+      },
+      {
+        "id": "77",
+        "name": "Memory status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Impaired"
+      },
+      {
+        "id": "82",
+        "name": "Central line site condition",
+        "value_type": "SINGLE_SELECT",
+        "value": "Intact"
+      },
+      {
+        "id": "90",
+        "name": "Glasgow coma score - best motor response",
+        "value_type": "SINGLE_SELECT",
+        "value": "obeys commands"
+      },
+      {
+        "id": "146",
+        "name": "Patient position",
+        "value_type": "SINGLE_SELECT",
+        "value": "lying"
+      },
+      {
+        "id": "175",
+        "name": "Activity level",
+        "value_type": "SINGLE_SELECT",
+        "value": "bed rest"
+      },
+      {
+        "id": "48",
+        "name": "Clinician notification",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "107",
+        "name": "Fall risk identification",
+        "value_type": "SINGLE_SELECT",
+        "value": "Medium"
+      },
+      {
+        "id": "41",
+        "name": "Speech clarity",
+        "value_type": "SINGLE_SELECT",
+        "value": "clear"
+      },
+      {
+        "id": "150",
+        "name": "Behavior",
+        "value_type": "SINGLE_SELECT",
+        "value": "Calm and cooperative"
+      },
+      {
+        "id": "159",
+        "name": "Bed alarm status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Deactivated"
+      },
+      {
+        "id": "76",
+        "name": "Pupil response",
+        "value_type": "SINGLE_SELECT",
+        "value": "Equal and reactive bilaterally"
+      },
+      {
+        "id": "120",
+        "name": "Fall risk assessment",
+        "value_type": "SINGLE_SELECT",
+        "value": "Morse fall risk assessment"
+      },
+      {
+        "id": "124",
+        "name": "General physical exam",
+        "value_type": "SINGLE_SELECT",
+        "value": "within normal limits"
+      },
+      {
+        "id": "39",
+        "name": "Communication sensory",
+        "value_type": "SINGLE_SELECT",
+        "value": "communication sensory 1"
+      },
+      {
+        "id": "2",
+        "name": "Sensory perception",
+        "value_type": "SINGLE_SELECT",
+        "value": "Intact"
+      },
+      {
+        "id": "113",
+        "name": "Bed position",
+        "value_type": "SINGLE_SELECT",
+        "value": "flat"
+      },
+      {
+        "id": "86",
+        "name": "Assistance with personal hygiene",
+        "value_type": "SINGLE_SELECT",
+        "value": "Independent"
+      },
+      {
+        "id": "129",
+        "name": "Incontinence status",
+        "value_type": "SINGLE_SELECT",
+        "value": "continent"
+      },
+      {
+        "id": "83",
+        "name": "Facial droop",
+        "value_type": "SINGLE_SELECT",
+        "value": "no facial droop"
+      },
+      {
+        "id": "115",
+        "name": "Broset violence checklist - irritability",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "105",
+        "name": "Catheter condition",
+        "value_type": "SINGLE_SELECT",
+        "value": "Intact"
+      },
+      {
+        "id": "95",
+        "name": "Peripheral IV site condition",
+        "value_type": "SINGLE_SELECT",
+        "value": "Intact"
+      },
+      {
+        "id": "36",
+        "name": "Gastrointestinal status",
+        "value_type": "SINGLE_SELECT",
+        "value": "within normal limits"
+      },
+      {
+        "id": "42",
+        "name": "Toileting needs",
+        "value_type": "SINGLE_SELECT",
+        "value": "1"
+      },
+      {
+        "id": "32",
+        "name": "Constipation episode",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "30",
+        "name": "Nausea",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "121",
+        "name": "Seizure activity",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "9",
+        "name": "Bedding change",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "40",
+        "name": "Orientation",
+        "value_type": "SINGLE_SELECT",
+        "value": "disoriented"
+      },
+      {
+        "id": "117",
+        "name": "Patient safety",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "133",
+        "name": "Dressing condition",
+        "value_type": "SINGLE_SELECT",
+        "value": "Clean"
+      },
+      {
+        "id": "134",
+        "name": "Diarrhea episode",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "109",
+        "name": "Assistance with toileting",
+        "value_type": "SINGLE_SELECT",
+        "value": "none"
+      },
+      {
+        "id": "51",
+        "name": "Pain severity",
+        "value_type": "SINGLE_SELECT",
+        "value": "0 out of 10"
+      },
+      {
+        "id": "61",
+        "name": "Perineal edema",
+        "value_type": "SINGLE_SELECT",
+        "value": "Absent"
+      },
+      {
+        "id": "79",
+        "name": "Feeding tube status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Absent"
+      },
+      {
+        "id": "78",
+        "name": "History of falls",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "58",
+        "name": "Capillary refill",
+        "value_type": "SINGLE_SELECT",
+        "value": "less than 3 seconds"
+      },
+      {
+        "id": "60",
+        "name": "Cranial nerve function",
+        "value_type": "SINGLE_SELECT",
+        "value": "Normal"
+      },
+      {
+        "id": "118",
+        "name": "Patient safety education",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "67",
+        "name": "Dyspnea",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "21",
+        "name": "Ambulatory aid",
+        "value_type": "SINGLE_SELECT",
+        "value": "none"
+      },
+      {
+        "id": "37",
+        "name": "Motor strength",
+        "value_type": "SINGLE_SELECT",
+        "value": "Normal"
+      },
+      {
+        "id": "71",
+        "name": "Vomiting",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "148",
+        "value": [
+          "nausea",
+          "vomiting"
+        ]
+      },
+      {
+        "id": "18",
+        "value": 150
+      },
+      {
+        "id": "192",
+        "value": "cc"
+      },
+      {
+        "id": "22",
+        "value": "dark green"
+      },
+      {
+        "id": "72",
+        "value": 24
+      },
+      {
+        "id": "182",
+        "value": "breaths per minute"
+      },
+      {
+        "id": "116",
+        "value": "Increased"
+      },
+      {
+        "id": "25",
+        "name": "Nutrition status",
+        "value_type": "SINGLE_SELECT",
+        "value": "unknown"
+      },
+      {
+        "id": "128",
+        "name": "Bowel sounds",
+        "value_type": "SINGLE_SELECT",
+        "value": "present in all quadrants"
+      },
+      {
+        "id": "147",
+        "name": "Swallowing function",
+        "value_type": "SINGLE_SELECT",
+        "value": "Normal"
+      },
+      {
+        "id": "84",
+        "name": "Abdomen exam",
+        "value_type": "MULTI_SELECT",
+        "value": [
+          "nondistended",
+          "nontender",
+          "soft"
+        ]
+      },
+      {
+        "id": "102",
+        "name": "Joint swelling",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "103",
+        "name": "Stool consistency",
+        "value_type": "SINGLE_SELECT",
+        "value": "Normal"
+      },
+      {
+        "id": "85",
+        "name": "Wound drainage",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "7",
+        "name": "Oral mucosa status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Moist"
+      },
+      {
+        "id": "151",
+        "name": "Edema",
+        "value_type": "SINGLE_SELECT",
+        "value": "No edema"
+      },
+      {
+        "id": "141",
+        "name": "Meal consumption",
+        "value_type": "SINGLE_SELECT",
+        "value": "Full"
+      },
+      {
+        "id": "45",
+        "name": "Pitting edema",
+        "value_type": "SINGLE_SELECT",
+        "value": "1+"
+      },
+      {
+        "id": "149",
+        "name": "Skin condition",
+        "value_type": "MULTI_SELECT",
+        "value": [
+          "intact",
+          "warm"
+        ]
+      },
+      {
+        "id": "98",
+        "name": "Intravenous therapy",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "132",
+        "name": "Joint deformity",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "106",
+        "name": "Wound type",
+        "value_type": "SINGLE_SELECT",
+        "value": "Surgical"
+      },
+      {
+        "id": "35",
+        "name": "Urinary within defined limits",
+        "value_type": "SINGLE_SELECT",
+        "value": "Yes"
+      },
+      {
+        "id": "68",
+        "name": "Feeding assistance",
+        "value_type": "SINGLE_SELECT",
+        "value": "No assistance required"
+      },
+      {
+        "id": "152",
+        "name": "Nasogastric tube status",
+        "value_type": "SINGLE_SELECT",
+        "value": "Not Inserted"
+      },
+      {
+        "id": "20",
+        "name": "Suprapubic tenderness",
+        "value_type": "SINGLE_SELECT",
+        "value": "No"
+      },
+      {
+        "id": "140",
+        "name": "Nasal discharge",
+        "value_type": "SINGLE_SELECT",
+        "value": "None"
+      },
+      {
+        "id": "123",
+        "name": "Friction and shear",
+        "value_type": "SINGLE_SELECT",
+        "value": "No apparent problem"
+      },
+      {
+        "id": "144",
+        "name": "Urinary stone",
+        "value_type": "SINGLE_SELECT",
+        "value": "Absent"
+      }
+    ],
+    "gold": [
+      {
+        "id": "26",
+        "value_type": "STRING",
+        "name": "Delirium symptoms",
+        "value": "early signs of delirium"
+      },
+      {
+        "id": "40",
+        "value_type": "SINGLE_SELECT",
+        "name": "Orientation",
+        "value": "disoriented"
+      },
+      {
+        "id": "18",
+        "value_type": "NUMERIC",
+        "name": "Emesis volume",
+        "value": 150
+      },
+      {
+        "id": "22",
+        "value_type": "SINGLE_SELECT",
+        "name": "Emesis color",
+        "value": "dark green"
+      },
+      {
+        "id": "72",
+        "value_type": "NUMERIC",
+        "name": "Respirations",
+        "value": 24
+      },
+      {
+        "id": "182",
+        "value_type": "SINGLE_SELECT",
+        "name": "Respirations unit",
+        "value": "breaths per minute"
+      },
+      {
+        "id": "130",
+        "value_type": "SINGLE_SELECT",
+        "name": "Cognitive status",
+        "value": "Alert with general confusion and forgetfulness"
+      },
+      {
+        "id": "30",
+        "value_type": "SINGLE_SELECT",
+        "name": "Nausea",
+        "value": "Yes"
+      },
+      {
+        "id": "71",
+        "value_type": "SINGLE_SELECT",
+        "name": "Vomiting",
+        "value": "Yes"
+      },
+      {
+        "id": "148",
+        "value_type": "MULTI_SELECT",
+        "name": "Gastrointestinal symptoms",
+        "value": [
+          "vomiting",
+          "nausea"
+        ]
+      }
+    ],
+    "single_result": {
+      "precision": 0.08860759493670886,
+      "recall": 0.7,
+      "f1": 0.15730337078651685
+    }
+  },
+  {
+    "id": "54",
+    "predictions": [
+      {
+        "id": "165",
+        "name": "Breath sounds",
+        "value": [
+          "diminished"
+        ]
+      },
+      {
+        "id": "67",
+        "name": "Dyspnea",
+        "value": "Mild"
+      },
+      {
+        "id": "10",
+        "name": "Oxygen saturation",
+        "value": 88
+      },
+      {
+        "id": "98",
+        "name": "Intravenous therapy",
+        "value": "Yes"
+      },
+      {
+        "id": "55",
+        "name": "Mean arterial pressure (MAP)",
+        "value": 60
+      },
+      {
+        "id": "120",
+        "name": "Fall risk assessment",
+        "value": "Morse fall risk assessment"
+      },
+      {
+        "id": "128",
+        "name": "Bowel sounds",
+        "value": "hypoactive in all quadrants"
+      },
+      {
+        "id": "7",
+        "name": "Oral mucosa status",
+        "value": "Dry"
+      }
+    ],
+    "gold": [
+      {
+        "id": "10",
+        "value_type": "NUMERIC",
+        "name": "Oxygen saturation",
+        "value": 88
+      },
+      {
+        "id": "178",
+        "value_type": "SINGLE_SELECT",
+        "name": "Oxygen saturation unit",
+        "value": "%"
+      },
+      {
+        "id": "67",
+        "value_type": "SINGLE_SELECT",
+        "name": "Dyspnea",
+        "value": "Mild"
+      },
+      {
+        "id": "165",
+        "value_type": "MULTI_SELECT",
+        "name": "Breath sounds",
+        "value": [
+          "diminished"
+        ]
+      },
+      {
+        "id": "98",
+        "value_type": "SINGLE_SELECT",
+        "name": "Intravenous therapy",
+        "value": "Yes"
+      },
+      {
+        "id": "55",
+        "value_type": "NUMERIC",
+        "name": "Mean arterial pressure (MAP)",
+        "value": 60
+      },
+      {
+        "id": "184",
+        "value_type": "SINGLE_SELECT",
+        "name": "Mean arterial pressure (MAP) unit",
+        "value": "mmHg"
+      },
+      {
+        "id": "120",
+        "value_type": "SINGLE_SELECT",
+        "name": "Fall risk assessment",
+        "value": "Morse fall risk assessment"
+      },
+      {
+        "id": "128",
+        "value_type": "SINGLE_SELECT",
+        "name": "Bowel sounds",
+        "value": "hypoactive in all quadrants"
+      },
+      {
+        "id": "7",
+        "value_type": "SINGLE_SELECT",
+        "name": "Oral mucosa status",
+        "value": "Dry"
+      }
+    ],
+    "single_result": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889
+    }
+  },
+  {
+    "id": "76",
+    "predictions": [
+      {
+        "id": "21",
+        "name": "Ambulatory aid",
+        "value": "walker"
+      },
+      {
+        "id": "89",
+        "name": "Mobility",
+        "value": "Mildly impaired"
+      },
+      {
+        "id": "132",
+        "name": "Joint deformity",
+        "value": "Mild"
+      },
+      {
+        "id": "45",
+        "name": "Pitting edema",
+        "value": "2+"
+      },
+      {
+        "id": "37",
+        "name": "Motor strength",
+        "value": "Generalized weakness"
+      },
+      {
+        "id": "164",
+        "name": "Level of assistance",
+        "value": "moderate assist"
+      },
+      {
+        "id": "151",
+        "name": "Edema",
+        "value": "No edema"
+      },
+      {
+        "id": "3",
+        "name": "Respiratory interventions",
+        "value_type": "MULTI_SELECT",
+        "value": [
+          "raising head of bed"
+        ]
+      },
+      {
+        "id": "136",
+        "name": "Respiratory equipment",
+        "value_type": "SINGLE_SELECT",
+        "value": "incentive spirometer"
+      },
+      {
+        "id": "146",
+        "name": "Patient position",
+        "value_type": "SINGLE_SELECT",
+        "value": "lying"
+      },
+      {
+        "id": "13",
+        "name": "Breathing pattern",
+        "value_type": "MULTI_SELECT",
+        "value": [
+          "labored"
+        ]
+      },
+      {
+        "id": "113",
+        "name": "Bed position",
+        "value_type": "SINGLE_SELECT",
+        "value": "raised"
+      },
+      {
+        "id": "25",
+        "name": "Nutrition status",
+        "value_type": "SINGLE_SELECT",
+        "value": "adequate"
+      }
+    ],
+    "gold": [
+      {
+        "id": "21",
+        "value_type": "SINGLE_SELECT",
+        "name": "Ambulatory aid",
+        "value": "walker"
+      },
+      {
+        "id": "132",
+        "value_type": "SINGLE_SELECT",
+        "name": "Joint deformity",
+        "value": "Mild"
+      },
+      {
+        "id": "45",
+        "value_type": "SINGLE_SELECT",
+        "name": "Pitting edema",
+        "value": "2+"
+      },
+      {
+        "id": "37",
+        "value_type": "SINGLE_SELECT",
+        "name": "Motor strength",
+        "value": "Generalized weakness"
+      },
+      {
+        "id": "164",
+        "value_type": "SINGLE_SELECT",
+        "name": "Level of assistance",
+        "value": "moderate assist"
+      },
+      {
+        "id": "89",
+        "value_type": "SINGLE_SELECT",
+        "name": "Mobility",
+        "value": "Mildly impaired"
+      },
+      {
+        "id": "146",
+        "value_type": "SINGLE_SELECT",
+        "name": "Patient position",
+        "value": "lying"
+      },
+      {
+        "id": "113",
+        "value_type": "SINGLE_SELECT",
+        "name": "Bed position",
+        "value": "raised"
+      },
+      {
+        "id": "13",
+        "value_type": "MULTI_SELECT",
+        "name": "Breathing pattern",
+        "value": [
+          "labored"
+        ]
+      },
+      {
+        "id": "3",
+        "value_type": "MULTI_SELECT",
+        "name": "Respiratory interventions",
+        "value": [
+          "raising head of bed",
+          "incentive spirometer usage"
+        ]
+      },
+      {
+        "id": "136",
+        "value_type": "SINGLE_SELECT",
+        "name": "Respiratory equipment",
+        "value": "incentive spirometer"
+      },
+      {
+        "id": "25",
+        "value_type": "SINGLE_SELECT",
+        "name": "Nutrition status",
+        "value": "adequate"
+      }
+    ],
+    "single_result": {
+      "precision": 0.8461538461538461,
+      "recall": 0.9166666666666666,
+      "f1": 0.8799999999999999
+    }
+  }
+]
