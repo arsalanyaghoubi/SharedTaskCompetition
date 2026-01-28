@@ -49,13 +49,17 @@ def schema_read(file_path:str):
 
 
 if __name__ == '__main__':
-    data_path = r"D:\LoyolaUniversityChicago\Competitions\1\Data\dev.jsonl"
+
+    from pathlib import Path
+    script_dir = Path(__file__).parent
+    data_path = script_dir / "Data" / "dev.jsonl"
+    schema_path = script_dir / "Data" / "synur_schema.json"
+    
     dataset = data_read_main(data_path)
     print(dataset[152][0])
     print(dataset[152][1])
     for i in dataset[152][1]:
         print(i['name'])
-    schema_path = r"D:\LoyolaUniversityChicago\Competitions\1\Data\synur_schema.json"
     schema = schema_read(schema_path)
 
 
