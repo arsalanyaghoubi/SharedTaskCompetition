@@ -35,7 +35,6 @@ from config import PipelineConfig
 from schema_rag import SchemaRAG, FewShotRAG
 from segmentation import segment_transcript, segment_transcript_simple
 from extraction import extract_observations, extract_from_full_transcript
-from evaluation import evaluate_single, evaluate_dataset, compute_error_analysis, EvaluationResult
 
 
 def load_jsonl(path):
@@ -56,7 +55,7 @@ def parse_observations(obs_field):
     return obs_field
 
 
-def run_pipeline(config, use_llm_segmentation=False, verbose=True, limit=None, partial_credit=False):
+def run_pipeline(config, use_llm_segmentation=False, verbose=True, limit=None):
 
     # Load .env from project root
     load_dotenv(PROJECT_ROOT / ".env")
@@ -138,23 +137,42 @@ def run_pipeline(config, use_llm_segmentation=False, verbose=True, limit=None, p
         all_predictions.append(predictions)
         all_gold.append(gold_obs)
     
-    # Step 4: Evaluate
-    if verbose:
-        print("\nEvaluating predictions.")
-        if partial_credit:
-            print("Using partial credit for MULTI_SELECT.")
-    result = evaluate_dataset(all_predictions, all_gold, partial_credit=partial_credit)
     
-    return all_predictions, all_gold, result
+    return all_predictions, all_gold
 
 
-def save_results(config, all_predictions, all_gold, result, eval_data, use_llm_segmentation=False, partial_credit=False, limit=None):
+def run_official_eval(pred_jsonl_path, ref_jsonl_path):
+    import subprocess
+    
+    eval_script = PROJECT_ROOT / "mediqa_synur_eval_script.py"
+
+    
+    result = subprocess.run(
+        ["python", str(eval_script), "-r", str(ref_jsonl_path), "-p", str(pred_jsonl_path)],
+        capture_output=True,
+        text=True
+    )
+    
+    lines = result.stdout.strip().split("\n")
+    try:
+        idx = lines.index("Final Results:")
+        precision = float(lines[idx + 1])
+        recall = float(lines[idx + 2])
+        f1 = float(lines[idx + 3])
+        return {"precision": precision, "recall": recall, "f1": f1}
+    except (ValueError, IndexError) as e:
+        print(f"Error parsing official eval output: {e}")
+        print(f"Output was: {result.stdout}")
+        return None
+
+
+def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentation=False, limit=None):
 
     config.output_dir.mkdir(parents=True, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
-    # Save predictions
+    # Save predictions in our detailed format (for error analysis)
     predictions_path = config.output_dir / f"predictions_{config.llm_model}_{timestamp}.json"
     with open(predictions_path, "w", encoding="utf-8") as f:
         output = []
@@ -162,14 +180,33 @@ def save_results(config, all_predictions, all_gold, result, eval_data, use_llm_s
             output.append({
                 "id": eval_data[i].get("id", str(i)),
                 "predictions": preds,
-                "gold": gold,
-                "single_result": {
-                    "precision": evaluate_single(preds, gold).precision,
-                    "recall": evaluate_single(preds, gold).recall,
-                    "f1": evaluate_single(preds, gold).f1
-                }
+                "gold": gold
             })
         json.dump(output, f, indent=2)
+    
+    # Save predictions in official JSONL format (for official eval and submission)
+    official_pred_path = config.output_dir / f"official_pred_{config.llm_model}_{timestamp}.jsonl"
+    with open(official_pred_path, "w", encoding="utf-8") as f:
+        for i, preds in enumerate(all_predictions):
+            record = {
+                "id": eval_data[i].get("id", str(i)),
+                "observations": preds
+            }
+            f.write(json.dumps(record) + "\n")
+    
+    # Create filtered reference file (only transcripts we actually processed)
+    # This is needed because official eval counts missing IDs as all FN
+    official_ref_path = config.output_dir / f"official_ref_{config.llm_model}_{timestamp}.jsonl"
+    with open(official_ref_path, "w", encoding="utf-8") as f:
+        for i, gold in enumerate(all_gold):
+            record = {
+                "id": eval_data[i].get("id", str(i)),
+                "observations": gold
+            }
+            f.write(json.dumps(record) + "\n")
+    
+    # Run official evaluation
+    official_result = run_official_eval(official_pred_path, official_ref_path)
     
     # Save summary
     summary_path = config.output_dir / f"summary_{config.llm_model}_{timestamp}.json"
@@ -197,23 +234,30 @@ def save_results(config, all_predictions, all_gold, result, eval_data, use_llm_s
             # Segmentation
             "segmentation": "llm" if use_llm_segmentation else "simple",
             
-            # Evaluation settings
-            "partial_credit": partial_credit,
+            # Data
             "num_transcripts": len(all_predictions),
             "limit": limit,
             
-            # Results
-            "true_positives": result.true_positives,
-            "false_positives": result.false_positives,
-            "false_negatives": result.false_negatives,
-            "precision": result.precision,
-            "recall": result.recall,
-            "f1": result.f1
+            # Official evaluation results
+            "precision": official_result["precision"] if official_result else None,
+            "recall": official_result["recall"] if official_result else None,
+            "f1": official_result["f1"] if official_result else None
         }, f, indent=2)
     
-    print(f"\nResults saved to:")
-    print(f"Predictions: {predictions_path}")
-    print(f"Summary: {summary_path}")
+    # Print results
+    print(f"\n{'='*60}")
+    print("RESULTS")
+    print(f"{'='*60}")
+    
+
+    print(f"  Precision: {official_result['precision']:.4f}")
+    print(f"  Recall:    {official_result['recall']:.4f}")
+    print(f"  F1:        {official_result['f1']:.4f}  ({official_result['f1']*100:.1f}%)")
+    
+    print(f"\nFiles saved:")
+    print(f"  Predictions (for error analysis): {predictions_path.name}")
+    print(f"  Predictions (official format):    {official_pred_path.name}")
+    print(f"  Summary: {summary_path.name}")
 
 
 def main():
@@ -236,8 +280,6 @@ def main():
                         help="Use LLM for segmentation")
     parser.add_argument("--enhanced-prompts", action="store_true",
                         help="Use enhanced prompts instead of paper's exact prompts")
-    parser.add_argument("--partial-credit", action="store_true",
-                        help="Use partial credit for MULTI_SELECT")
     parser.add_argument("--output-dir", default=None,
                         help="Directory for output files (default: synur_pipeline/outputs)")
     parser.add_argument("--limit", type=int, default=None,
@@ -277,33 +319,21 @@ def main():
     print(f"Segmentation: {'LLM' if args.llm_segmentation else 'Simple rules'}")
     if args.limit:
         print(f"Limit: {args.limit} transcripts")
-    if args.partial_credit:
-        print(f"Evaluation: Partial credit for MULTI_SELECT")
     print("=" * 60)
     
     # Run pipeline
-    all_predictions, all_gold, result = run_pipeline(
+    all_predictions, all_gold = run_pipeline(
         config,
         use_llm_segmentation=args.llm_segmentation,
         verbose=True,
-        limit=args.limit,
-        partial_credit=args.partial_credit
+        limit=args.limit
     )
     
-    # Print results
-    print("\n" + "=" * 60)
-    print("RESULTS" + (" (with partial credit)" if args.partial_credit else ""))
-    print("=" * 60)
-    print(result)
-    print(f"\nF1 Score: {result.f1 * 100:.1f}%")
-    
-    
-    # Save results
+    # Save results and run official evaluation
     eval_data = load_jsonl(config.dev_path)
     save_results(
-        config, all_predictions, all_gold, result, eval_data,
+        config, all_predictions, all_gold, eval_data,
         use_llm_segmentation=args.llm_segmentation,
-        partial_credit=args.partial_credit,
         limit=args.limit
     )
 
