@@ -74,6 +74,10 @@ def check_text_in_transcript(text, transcript):
     if not text or not transcript:
         return False
     
+    # Convert to string if needed
+    text = str(text)
+    transcript = str(transcript)
+    
     # First try exact match
     if text.lower().strip() in transcript.lower():
         return True

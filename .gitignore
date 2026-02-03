@@ -16,3 +16,7 @@ ENV/
 # IDE
 .vscode/
 .idea/
+
+# SFT outputs (large model files)
+synur_pipeline/sft_output/
+synur_pipeline/outputs/
