@@ -1,16 +1,4 @@
-﻿"""
-SYNUR Pipeline Configuration
-
-This module contains all configurable parameters for the extraction pipeline.
-
-IMPORTANT: What's from the paper vs. our choices:
-- LLM models (gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini): FROM PAPER
-- Embedding model (all-MiniLM-L6-v2): OUR CHOICE (paper doesn't specify)
-- top_n_schema_rows (20): OUR CHOICE (paper doesn't specify)
-- Prompts: Paper provides "simplified" versions in Appendix A.1; we include both.
-"""
-
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -33,9 +21,9 @@ class PipelineConfig:
     llm_model_path: Optional[str] = None  # Path to local model folder (if None, uses OpenAI)
     
     temperature: float = 0.0  # Deterministic outputs for reproducibility
-    max_tokens: int = 2048
+    max_tokens: int = 4096
 
-    use_paper_prompts: bool = True #True uses the paper's simplified prompts, False uses some more detailed prompts.
+    use_paper_prompts: bool = True # True uses the paper's simplified prompts, False uses some more detailed prompts.
     
     # Few-shot settings
     use_few_shot: bool = False  # Default to zero-shot for baseline reproduction

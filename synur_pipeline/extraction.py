@@ -164,7 +164,7 @@ def _clean_llm_response(result):
     
     # Remove markdown code blocks (```json ... ``` or ``` ... ```)
     if result.startswith("```"):
-        # Find the end of the first line (might be ```json or just ```)
+        # Find the end of the first line
         first_newline = result.find("\n")
         if first_newline != -1:
             result = result[first_newline + 1:]
@@ -173,30 +173,33 @@ def _clean_llm_response(result):
             result = result[:-3]
         result = result.strip()
     
-    # Remove // comments (common with Llama models)
-    # This regex removes // and everything after it until end of line, but not inside strings
-    # Simple approach: remove lines that are just comments, and inline comments after values
+    # Remove // comments
     lines = result.split('\n')
     cleaned_lines = []
     for line in lines:
-        # Remove inline comments: "value": "something" // comment
-        # Be careful not to remove // inside string values
-        # Look for // that appears after a quote or comma/bracket
         comment_match = re.search(r'("[^"]*"|[\[\]{},:])\s*//.*$', line)
         if comment_match:
-            # Find where the // starts and remove from there
             comment_pos = line.rfind('//')
             if comment_pos > 0:
                 line = line[:comment_pos].rstrip()
         cleaned_lines.append(line)
     result = '\n'.join(cleaned_lines)
     
+    result = re.sub(
+        r'"value"\s*:\s*(\d+/\d+)(\s*[,}\]])',
+        r'"value": "\1"\2',
+        result
+    )
+    
+    result = re.sub(
+        r'"value"\s*:\s*(\d+\.?\d*[a-zA-Z%/]+\d*[a-zA-Z]*)(\s*[,}\]])',
+        r'"value": "\1"\2',
+        result
+    )
+    
     # Try to fix truncated JSON by finding the last complete object/array
-    # If JSON doesn't end with } or ], try to repair it
     result = result.rstrip()
     if result and not result.endswith('}') and not result.endswith(']'):
-        # Find the last complete structure
-        # Count braces to find where we can safely cut
         brace_count = 0
         bracket_count = 0
         last_valid_pos = -1
@@ -229,11 +232,9 @@ def _clean_llm_response(result):
                 if brace_count == 0 and bracket_count == 0:
                     last_valid_pos = i + 1
         
-        # If we found a valid cut point and it's not at the end, truncate there
         if last_valid_pos > 0 and last_valid_pos < len(result):
             result = result[:last_valid_pos]
     
-    # Remove trailing commas before } or ] (common JSON error)
     result = re.sub(r',\s*([}\]])', r'\1', result)
     
     return result
@@ -245,7 +246,7 @@ def _parse_llm_response(result, schema_rows):
     id_to_row = {row.id: row for row in schema_rows}
     name_to_row = {row.name.lower(): row for row in schema_rows}
     
-    # Clean the response (strip markdown code blocks, etc.)
+    # Clean the response
     result = _clean_llm_response(result)
     
     try:

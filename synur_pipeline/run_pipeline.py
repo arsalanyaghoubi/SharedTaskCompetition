@@ -49,14 +49,16 @@ _local_model = None
 _local_tokenizer = None
 _model_name = None
 _model_path = None
+_max_tokens = 4096
 
 
-def init_llm(model_name, model_path=None):
+def init_llm(model_name, model_path=None, max_tokens=4096):
 
-    global _openai_client, _local_model, _local_tokenizer, _model_name, _model_path
+    global _openai_client, _local_model, _local_tokenizer, _model_name, _model_path, _max_tokens
     
     _model_name = model_name
     _model_path = model_path
+    _max_tokens = max_tokens
     
     if model_path:
         print(f"Loading model from {model_path}")
@@ -85,7 +87,7 @@ def call_llm(messages, temperature=0.0, json_mode=False):
         
         outputs = _local_model.generate(
             **inputs,
-            max_new_tokens=4096,
+            max_new_tokens=_max_tokens,
             do_sample=temperature > 0,
             temperature=temperature if temperature > 0 else None,
             pad_token_id=_local_tokenizer.pad_token_id
@@ -95,7 +97,7 @@ def call_llm(messages, temperature=0.0, json_mode=False):
         return _local_tokenizer.decode(new_tokens, skip_special_tokens=True)
     else:
         # OpenAI
-        kwargs = {"model": _model_name, "messages": messages, "temperature": temperature}
+        kwargs = {"model": _model_name, "messages": messages, "temperature": temperature, "max_tokens": _max_tokens}
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
         
@@ -133,7 +135,7 @@ def run_pipeline(config, use_llm_segmentation=False, verbose=True, limit=None):
     if verbose:
         print(f"Initializing LLM")
     
-    init_llm(config.llm_model, config.llm_model_path)
+    init_llm(config.llm_model, config.llm_model_path, config.max_tokens)
     
     if verbose:
         print(f"Using model: {get_model_name()}")
@@ -250,6 +252,23 @@ def run_official_eval(pred_jsonl_path, ref_jsonl_path):
         return None
 
 
+def validate_observations(observations):
+
+    valid = []
+    for obs in observations:
+        # Must be a dict
+        if not isinstance(obs, dict):
+            continue
+        # Must have required fields
+        if 'id' not in obs:
+            continue
+        if 'value' not in obs or obs['value'] is None:
+            continue
+        # value_type is optional but good to have
+        valid.append(obs)
+    return valid
+
+
 def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentation=False, limit=None, data_split="train"):
     
     model_name = config.get_model_display_name()
@@ -297,13 +316,25 @@ def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentat
     
     # Save predictions in official JSONL format
     official_pred_path = run_dir / f"submission_{timestamp}.jsonl"
+    total_obs = 0
+    valid_obs = 0
     with open(official_pred_path, "w", encoding="utf-8") as f:
         for i, preds in enumerate(all_predictions):
+            # Validate observations before writing
+            validated_preds = validate_observations(preds)
+            total_obs += len(preds)
+            valid_obs += len(validated_preds)
             record = {
                 "id": eval_data[i].get("id", str(i)),
-                "observations": preds
+                "observations": validated_preds
             }
             f.write(json.dumps(record) + "\n")
+    
+    # Report filtered observations
+    filtered_count = total_obs - valid_obs
+    if filtered_count > 0:
+        print(f"\n[INFO] Filtered {filtered_count} malformed observations (missing id/value)")
+        print(f"[INFO] {valid_obs}/{total_obs} observations retained for evaluation")
     
     # Create temporary reference file for evaluation
     import tempfile
@@ -357,6 +388,11 @@ def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentat
             "data_split": data_split,
             "num_transcripts": len(all_predictions),
             "limit": limit,
+            
+            # Observation counts
+            "total_observations": total_obs,
+            "valid_observations": valid_obs,
+            "filtered_malformed": filtered_count,
             
             # Official evaluation results
             "precision": official_result["precision"] if official_result else None,
