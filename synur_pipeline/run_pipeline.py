@@ -8,21 +8,27 @@ Extraction pipeline:
 
 Usage:
     cd synur_pipeline
+    
+    # OpenAI models (requires OPENAI_API_KEY in .env)
+    python run_pipeline.py --data dev --model gpt-4o-mini
     python run_pipeline.py --data dev --model gpt-4o --few-shot
-    python run_pipeline.py --data dev --model gpt-4o-mini --zero-shot
+    
+    # Local models (point to your model folder)
+    python run_pipeline.py --data dev --model llama-3.2-3b --model-path /path/to/Llama-3.2-3B-Instruct
+    python run_pipeline.py --data dev --model mistral-7b --model-path /models/Mistral-7B-Instruct-v0.3
 """
 
 import argparse
 import json
 import os
-import random
 import sys
 from datetime import datetime
 from pathlib import Path
 
+import torch
 from dotenv import load_dotenv
-from openai import OpenAI
 from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # Get the directory where this script lives
 SCRIPT_DIR = Path(__file__).parent.resolve()
@@ -32,10 +38,73 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from config import PipelineConfig
-from schema_rag import SchemaRAG, FewShotRAG
+from schema_rag import SchemaRAG, HybridSchemaRAG, FewShotRAG
 from segmentation import segment_transcript, segment_transcript_simple
 from extraction import extract_observations, extract_from_full_transcript
 
+
+# Global model storage (loaded once, reused)
+_openai_client = None
+_local_model = None
+_local_tokenizer = None
+_model_name = None
+_model_path = None
+
+
+def init_llm(model_name, model_path=None):
+
+    global _openai_client, _local_model, _local_tokenizer, _model_name, _model_path
+    
+    _model_name = model_name
+    _model_path = model_path
+    
+    if model_path:
+        print(f"Loading model from {model_path}")
+        _local_tokenizer = AutoTokenizer.from_pretrained(model_path)
+        if _local_tokenizer.pad_token is None:
+            _local_tokenizer.pad_token = _local_tokenizer.eos_token
+        
+        dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+        _local_model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=dtype, device_map="auto")
+        print(f"Model loaded")
+    else:
+        from openai import OpenAI
+        _openai_client = OpenAI()
+
+
+def call_llm(messages, temperature=0.0, json_mode=False):
+
+    if _model_path:
+        # Local model
+        prompt = _local_tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        
+        if json_mode:
+            prompt += "\nRespond with valid JSON only:\n"
+        
+        inputs = _local_tokenizer(prompt, return_tensors="pt").to(_local_model.device)
+        
+        outputs = _local_model.generate(
+            **inputs,
+            max_new_tokens=4096,
+            do_sample=temperature > 0,
+            temperature=temperature if temperature > 0 else None,
+            pad_token_id=_local_tokenizer.pad_token_id
+        )
+        
+        new_tokens = outputs[0][inputs["input_ids"].shape[1]:]
+        return _local_tokenizer.decode(new_tokens, skip_special_tokens=True)
+    else:
+        # OpenAI
+        kwargs = {"model": _model_name, "messages": messages, "temperature": temperature}
+        if json_mode:
+            kwargs["response_format"] = {"type": "json_object"}
+        
+        response = _openai_client.chat.completions.create(**kwargs)
+        return response.choices[0].message.content
+
+
+def get_model_name():
+    return _model_name
 
 def load_jsonl(path):
 
@@ -60,13 +129,28 @@ def run_pipeline(config, use_llm_segmentation=False, verbose=True, limit=None):
     # Load .env from project root
     load_dotenv(PROJECT_ROOT / ".env")
     
-    # Initialize OpenAI client
-    client = OpenAI()
+    # Initialize LLM (OpenAI or local model)
+    if verbose:
+        print(f"Initializing LLM")
+    
+    init_llm(config.llm_model, config.llm_model_path)
+    
+    if verbose:
+        print(f"Using model: {get_model_name()}")
     
     # Load schema and initialize RAG
     if verbose:
-        print(f"Loading schema from {config.schema_path}.")
-    schema_rag = SchemaRAG(config.schema_path, config.embedding_model)
+        print(f"Loading schema from {config.schema_path}")
+    
+    # Use hybrid search if configured
+    if getattr(config, 'use_hybrid_search', False):
+        alpha = getattr(config, 'hybrid_alpha', 0.6)
+        schema_rag = HybridSchemaRAG(config.schema_path, config.embedding_model, alpha=alpha)
+        if verbose:
+            print(f"  Using HYBRID search (alpha={alpha})")
+    else:
+        schema_rag = SchemaRAG(config.schema_path, config.embedding_model)
+    
     if verbose:
         print(f"  Loaded {len(schema_rag.schema_rows)} schema rows.")
     
@@ -115,7 +199,8 @@ def run_pipeline(config, use_llm_segmentation=False, verbose=True, limit=None):
         # Step 1: Segment the transcript
         if use_llm_segmentation:
             segments = segment_transcript(
-                transcript, client, config.llm_model,
+                transcript,
+                call_llm,
                 use_paper_prompt=config.use_paper_prompts
             )
         else:
@@ -126,8 +211,7 @@ def run_pipeline(config, use_llm_segmentation=False, verbose=True, limit=None):
             transcript=transcript,
             segments=segments,
             schema_rag=schema_rag,
-            client=client,
-            model=config.llm_model,
+            call_llm=call_llm,
             top_n_schema=config.top_n_schema_rows,
             few_shot_examples=few_shot_examples,
             temperature=config.temperature,
@@ -166,14 +250,41 @@ def run_official_eval(pred_jsonl_path, ref_jsonl_path):
         return None
 
 
-def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentation=False, limit=None):
-
-    config.output_dir.mkdir(parents=True, exist_ok=True)
+def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentation=False, limit=None, data_split="train"):
+    
+    model_name = config.get_model_display_name()
+    
+    emb_short = config.embedding_model.split("/")[-1]
+    if emb_short == "text-embedding-3-small":
+        emb_short = "openai-small"
+    elif "MiniLM" in emb_short:
+        emb_short = "MiniLM"
+    elif "bge" in emb_short.lower():
+        emb_short = "BGE"
+    
+    # Build config string
+    config_parts = [
+        data_split,
+        emb_short,
+        f"top{config.top_n_schema_rows}"
+    ]
+    if getattr(config, 'use_hybrid_search', False):
+        config_parts.append(f"hybrid{config.hybrid_alpha}")
+    if not config.use_paper_prompts:
+        config_parts.append("enhanced")
+    if config.use_few_shot:
+        config_parts.append(f"{config.num_few_shot_examples}shot")
+    
+    config_folder = "_".join(config_parts)
+    
+    # Create organized output directory
+    run_dir = config.output_dir / model_name / config_folder
+    run_dir.mkdir(parents=True, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
-    # Save predictions in our detailed format (for error analysis)
-    predictions_path = config.output_dir / f"predictions_{config.llm_model}_{timestamp}.json"
+    # Save predictions (for error analysis)
+    predictions_path = run_dir / f"predictions_{timestamp}.json"
     with open(predictions_path, "w", encoding="utf-8") as f:
         output = []
         for i, (preds, gold) in enumerate(zip(all_predictions, all_gold)):
@@ -184,8 +295,8 @@ def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentat
             })
         json.dump(output, f, indent=2)
     
-    # Save predictions in official JSONL format (for official eval and submission)
-    official_pred_path = config.output_dir / f"official_pred_{config.llm_model}_{timestamp}.jsonl"
+    # Save predictions in official JSONL format
+    official_pred_path = run_dir / f"submission_{timestamp}.jsonl"
     with open(official_pred_path, "w", encoding="utf-8") as f:
         for i, preds in enumerate(all_predictions):
             record = {
@@ -194,34 +305,42 @@ def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentat
             }
             f.write(json.dumps(record) + "\n")
     
-    # Create filtered reference file (only transcripts we actually processed)
-    # This is needed because official eval counts missing IDs as all FN
-    official_ref_path = config.output_dir / f"official_ref_{config.llm_model}_{timestamp}.jsonl"
-    with open(official_ref_path, "w", encoding="utf-8") as f:
+    # Create temporary reference file for evaluation
+    import tempfile
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.jsonl', delete=False) as ref_file:
         for i, gold in enumerate(all_gold):
             record = {
                 "id": eval_data[i].get("id", str(i)),
                 "observations": gold
             }
-            f.write(json.dumps(record) + "\n")
+            ref_file.write(json.dumps(record) + "\n")
+        ref_path = ref_file.name
     
     # Run official evaluation
-    official_result = run_official_eval(official_pred_path, official_ref_path)
+    official_result = run_official_eval(official_pred_path, ref_path)
     
-    # Save summary
-    summary_path = config.output_dir / f"summary_{config.llm_model}_{timestamp}.json"
+    # Clean up temp file
+    os.remove(ref_path)
+    
+    # Save summary with all config details
+    summary_path = run_dir / f"summary_{timestamp}.json"
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump({
             # Run metadata
             "timestamp": timestamp,
+            "run_folder": str(run_dir.relative_to(config.output_dir)),
             
             # Model settings
             "llm_model": config.llm_model,
+            "llm_model_path": config.llm_model_path,
+            "model_display_name": model_name,
             "embedding_model": config.embedding_model,
             "temperature": config.temperature,
             
             # RAG settings
             "top_n_schema_rows": config.top_n_schema_rows,
+            "hybrid_search": getattr(config, 'use_hybrid_search', False),
+            "hybrid_alpha": getattr(config, 'hybrid_alpha', None) if getattr(config, 'use_hybrid_search', False) else None,
             
             # Prompt settings
             "use_paper_prompts": config.use_paper_prompts,
@@ -235,6 +354,7 @@ def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentat
             "segmentation": "llm" if use_llm_segmentation else "simple",
             
             # Data
+            "data_split": data_split,
             "num_transcripts": len(all_predictions),
             "limit": limit,
             
@@ -249,15 +369,17 @@ def save_results(config, all_predictions, all_gold, eval_data, use_llm_segmentat
     print("RESULTS")
     print(f"{'='*60}")
     
-
-    print(f"  Precision: {official_result['precision']:.4f}")
-    print(f"  Recall:    {official_result['recall']:.4f}")
-    print(f"  F1:        {official_result['f1']:.4f}  ({official_result['f1']*100:.1f}%)")
+    if official_result:
+        print(f"  Precision: {official_result['precision']:.4f}")
+        print(f"  Recall:    {official_result['recall']:.4f}")
+        print(f"  F1:        {official_result['f1']:.4f}  ({official_result['f1']*100:.1f}%)")
+    else:
+        print("Official evaluation failed - check eval script output above")
     
-    print(f"\nFiles saved:")
-    print(f"  Predictions (for error analysis): {predictions_path.name}")
-    print(f"  Predictions (official format):    {official_pred_path.name}")
-    print(f"  Summary: {summary_path.name}")
+    print(f"\nFiles saved to: {run_dir.relative_to(config.output_dir)}/")
+    print(f"  predictions_{timestamp}.json  (for error analysis)")
+    print(f"  submission_{timestamp}.jsonl  (official format)")
+    print(f"  summary_{timestamp}.json      (config + metrics)")
 
 
 def main():
@@ -265,7 +387,9 @@ def main():
     parser.add_argument("--data", choices=["train", "dev"], default="train",
                         help="Dataset to evaluate on")
     parser.add_argument("--model", default="gpt-4o-mini",
-                        help="LLM model to use (gpt-4o, gpt-4o-mini, gpt-4.1, etc.)")
+                        help="Model name for display (e.g., gpt-4o-mini, llama-3.2-3b)")
+    parser.add_argument("--model-path", default=None,
+                        help="Path to local model folder. If provided, uses local model instead of OpenAI.")
     parser.add_argument("--few-shot", action="store_true",
                         help="Use few-shot examples")
     parser.add_argument("--zero-shot", action="store_true",
@@ -284,6 +408,10 @@ def main():
                         help="Directory for output files (default: synur_pipeline/outputs)")
     parser.add_argument("--limit", type=int, default=None,
                         help="Limit number of transcripts to process")
+    parser.add_argument("--hybrid", action="store_true",
+                        help="Use hybrid search (BM25 + dense embeddings)")
+    parser.add_argument("--hybrid-alpha", type=float, default=0.6,
+                        help="Alpha for hybrid search (1.0=dense only, 0.0=BM25 only, default=0.6)")
     
     args = parser.parse_args()
     
@@ -299,6 +427,7 @@ def main():
         train_path=PROJECT_ROOT / "Data/train.jsonl",
         dev_path=PROJECT_ROOT / "Data" / f"{args.data}.jsonl",
         llm_model=args.model,
+        llm_model_path=args.model_path,
         embedding_model=args.embedding_model,
         use_few_shot=use_few_shot,
         num_few_shot_examples=args.num_examples,
@@ -306,15 +435,26 @@ def main():
         use_paper_prompts=not args.enhanced_prompts,  # Default to paper prompts
         output_dir=output_dir
     )
+    
+    # Add hybrid search settings (not in dataclass, added dynamically)
+    config.use_hybrid_search = args.hybrid
+    config.hybrid_alpha = args.hybrid_alpha
+    
+    # Determine display name for model
+    model_display = config.get_model_display_name()
+    
     print("=" * 60)
     print("SYNUR Extraction Pipeline")
-    print(f"Model: {config.llm_model}")
+    print(f"Model: {model_display}")
+    if config.llm_model_path:
+        print(f"Model path: {config.llm_model_path}")
     print(f"Embedding: {config.embedding_model}")
     print(f"Mode: {'Few-shot' if config.use_few_shot else 'Zero-shot'}")
     if config.use_few_shot:
         print(f"Examples: {config.num_few_shot_examples}")
     print(f"Prompts: {'Paper (Appendix A.1)' if config.use_paper_prompts else 'Enhanced'}")
     print(f"Top-N schema rows: {config.top_n_schema_rows}")
+    print(f"Retrieval: {'Hybrid (BM25 + dense, alpha=' + str(config.hybrid_alpha) + ')' if config.use_hybrid_search else 'Dense only'}")
     print(f"Data: {args.data}")
     print(f"Segmentation: {'LLM' if args.llm_segmentation else 'Simple rules'}")
     if args.limit:
@@ -334,7 +474,8 @@ def main():
     save_results(
         config, all_predictions, all_gold, eval_data,
         use_llm_segmentation=args.llm_segmentation,
-        limit=args.limit
+        limit=args.limit,
+        data_split=args.data
     )
 
 

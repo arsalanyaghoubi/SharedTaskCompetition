@@ -1,0 +1,225 @@
+Loaded schema with 193 concepts
+Loaded 122 transcripts from train.jsonl
+Loaded 122 transcripts from predictions_gpt-4o-mini_20260128_193440.json
+
+======================================================================
+ERROR ANALYSIS REPORT
+======================================================================
+
+Total Predictions: 1484
+Total Gold Observations: 1685
+Correct: 1217 (82.0% of predictions)
+  Value Errors (STRING):        68
+  Value Errors (SELECT):        13
+  Hallucinated Observation:     186
+  Missed Observation:           387
+
+----------------------------------------------------------------------
+ERROR TYPE BREAKDOWN
+----------------------------------------------------------------------
+Category   Error Type                           Count  Description
+----------------------------------------------------------------------
+STRING     over_extraction_from_transcript         10  Correct + extra text from transcript
+STRING     under_extraction                         2  Didn't pull enough text
+STRING     wrong_span_from_transcript              14  Wrong text from transcript
+STRING     semantic_mismatch                        1  Both pred & gold are interpretations
+STRING     wrong_value_other                       41  Miscellaneous value mismatch
+SELECT     partial_match                           11  Some options right, some wrong
+SELECT     wrong_valid_option                       2  Valid option but not in gold
+GENERAL    hallucinated_observation               186  Predicted ID not in gold
+GENERAL    missed                                 387  Gold observation not predicted
+
+======================================================================
+SAMPLE ERRORS
+======================================================================
+
+--- OVER-EXTRACTION (from transcript) (10 total) ---
+    Model pulled correct answer + extra text from transcript
+
+  [139] ID 26: Delirium symptoms
+    Predicted: 'early signs of delirium or maybe a reaction to some other issues going on'
+    Gold:      'early signs of delirium'
+    Extra:     'or maybe a reaction to some other issues going on'
+
+  [18] ID 29: Pain management
+    Predicted: 'acetaminophen has been administered every 6 hours to help with any discomfort'
+    Gold:      'acetaminophen'
+    Extra:     'has been administered every 6 hours to help with any discomfort'
+
+  [129] ID 49: Peripheral pulses
+    Predicted: 'palpable but diminished'
+    Gold:      'palpable'
+    Extra:     'but diminished'
+
+  [129] ID 167: Pain description
+    Predicted: 'chronic dull ache'
+    Gold:      'chronic'
+    Extra:     'dull ache'
+
+  [138] ID 26: Delirium symptoms
+    Predicted: 'potentially indicate the onset of delirium or an acute change from their baseline mental state'
+    Gold:      'onset of delirium'
+    Extra:     'potentially indicate the  or an acute change from their baseline mental state'
+
+  ... and 5 more
+
+
+--- UNDER-EXTRACTION (2 total) ---
+    Model didn't pull enough text
+
+  [154] ID 14: Safety equipment
+    Predicted: 'intact'
+    Gold:      'in place and intact'
+    Missing:   'in place and'
+
+  [158] ID 59: IV fluid type and rate
+    Predicted: 'Normal Saline'
+    Gold:      'Normal Saline running at 125 mL/hour'
+    Missing:   'running at 125 ml/hour'
+
+
+--- WRONG SPAN (from transcript) (14 total) ---
+    Wrong text, but it exists in transcript
+
+  [14] ID 26: Delirium symptoms
+    Predicted: 'acute confusion'
+    Gold:      'signs of delirium'
+
+  [104] ID 16: Braden scale assessment
+    Predicted: 'Braden scale assessment'
+    Gold:      'Performed'
+
+  [102] ID 26: Delirium symptoms
+    Predicted: 'post-op delirium'
+    Gold:      'Post - op'
+
+  [102] ID 29: Pain management
+    Predicted: 'addressing with his pain management plan'
+    Gold:      'adressing'
+
+  [199] ID 26: Delirium symptoms
+    Predicted: 'advanced dementia symptoms'
+    Gold:      'confusion and disorientation'
+
+  ... and 9 more
+
+
+--- SEMANTIC MISMATCH (1 total) ---
+    Both pred and gold are interpretations, not literal extractions - format differs
+
+  [200] ID 23: Muscle contractures
+    Predicted: 'present'
+    Gold:      'Yes'
+
+
+--- OTHER VALUE ERROR (41 total) ---
+    Miscellaneous value mismatch
+
+  [14] ID 132: Joint deformity
+    Predicted: 'None'
+    Gold:      'Mild'
+
+  [203] ID 34: Pulse oximetry
+    Predicted: '88'
+    Gold:      '91'
+
+  [203] ID 36: Gastrointestinal status
+    Predicted: 'within normal limits'
+    Gold:      'distended'
+
+  [144] ID 130: Cognitive status
+    Predicted: 'Alert with general confusion and forgetfulness'
+    Gold:      'Forgetful at times'
+
+  [18] ID 151: Edema
+    Predicted: 'Generalized edema'
+    Gold:      '+1 edema'
+
+  ... and 36 more
+
+
+--- PARTIAL MATCH (MULTI_SELECT) (11 total) ---
+    Got some options right, missed/added others
+
+  [18] ID 139: Urine appearance
+    Predicted: ['cloudy', 'yellow']
+    Gold:      ['cloudy']
+    Matched: ['cloudy'], Missed: [], Extra: ['yellow']
+
+  [129] ID 122: Dental status
+    Predicted: ['Denture care', 'Missing teeth']
+    Gold:      ['Missing teeth', 'Denture care', 'Upper dentures', 'Lower dentures']
+    Matched: ['denture care', 'missing teeth'], Missed: ['upper dentures', 'lower dentures'], Extra: []
+
+  [102] ID 6: Weightbearing status
+    Predicted: ['non-weightbearing', 'weightbearing as tolerated to the left lower extremity']
+    Gold:      ['non-weightbearing']
+    Matched: ['non-weightbearing'], Missed: [], Extra: ['weightbearing as tolerated to the left lower extremity']
+
+  [114] ID 149: Skin condition
+    Predicted: ['intact', 'bruised']
+    Gold:      ['intact']
+    Matched: ['intact'], Missed: [], Extra: ['bruised']
+
+  [45] ID 149: Skin condition
+    Predicted: ['dry', 'pale']
+    Gold:      ['dry']
+    Matched: ['dry'], Missed: [], Extra: ['pale']
+
+  ... and 6 more
+
+
+--- WRONG OPTION (valid but incorrect) (2 total) ---
+    Chose valid schema option that wasn't in gold
+
+  [203] ID 148: Gastrointestinal symptoms
+    Predicted: ['no symptoms']
+    Gold:      diarrhea
+
+  [73] ID 3: Respiratory interventions
+    Predicted: ['intravenous therapy']
+    Gold:      raising head of bed
+
+
+--- HALLUCINATED OBSERVATIONS (186 total) ---
+    Model predicted an observation ID that exists in schema but wasn't in gold
+
+  Most common (top 15):
+    13x  ID 67: Dyspnea
+    13x  ID 130: Cognitive status
+    7x  ID 107: Fall risk identification
+    6x  ID 116: Work of breathing
+    6x  ID 10: Oxygen saturation
+    6x  ID 29: Pain management
+    5x  ID 36: Gastrointestinal status
+    5x  ID 110: Glasgow coma score - best verbal response
+    4x  ID 25: Nutrition status
+    4x  ID 145: Gait and transferring
+    4x  ID 117: Patient safety
+    4x  ID 190: Bladder scan volume unit
+    4x  ID 103: Stool consistency
+    4x  ID 89: Mobility
+    4x  ID 109: Assistance with toileting
+
+
+--- MISSED OBSERVATIONS (387 total) ---
+    Gold observations that the model didn't predict at all
+
+  Most common (top 15):
+    26x  ID 178: Oxygen saturation unit
+    23x  ID 31: Secondary diagnosis
+    17x  ID 40: Orientation
+    15x  ID 148: Gastrointestinal symptoms
+    15x  ID 180: Heart rate unit
+    11x  ID 0: Broset violence checklist - confusion
+    10x  ID 183: Urine output unit
+    9x  ID 182: Respirations unit
+    9x  ID 189: Oxygen flow rate unit
+    8x  ID 167: Pain description
+    8x  ID 162: Patient identification
+    7x  ID 113: Bed position
+    7x  ID 136: Respiratory equipment
+    7x  ID 30: Nausea
+    7x  ID 71: Vomiting
+
+======================================================================

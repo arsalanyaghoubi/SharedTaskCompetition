@@ -1,7 +1,6 @@
 # Splits nurse dictation transcripts into medically coherent segments. Can use LLM-based or simple rule-based methods.
 
 import json
-from openai import OpenAI
 
 
 # Paper's simplified prompt (Appendix A.1) - they couldn't share the full version
@@ -43,7 +42,7 @@ Divide this transcript into medically coherent segments. Return a JSON object wi
 SEGMENTS:"""
 
 # Segment a nurse dictation transcript into medically coherent chunks.
-def segment_transcript(transcript, client, model="gpt-4o", use_paper_prompt=True):
+def segment_transcript(transcript, call_llm, use_paper_prompt=True):
 
     if use_paper_prompt:
         # Paper's exact single-prompt approach
@@ -57,14 +56,7 @@ def segment_transcript(transcript, client, model="gpt-4o", use_paper_prompt=True
             {"role": "user", "content": SEGMENTATION_USER_PROMPT_ENHANCED.format(transcript=transcript)}
         ]
     
-    response = client.chat.completions.create(
-        model=model,
-        temperature=0.0,
-        response_format={"type": "json_object"},
-        messages=messages
-    )
-    
-    result = response.choices[0].message.content
+    result = call_llm(messages, temperature=0.0, json_mode=True)
     
     try:
         parsed = json.loads(result)

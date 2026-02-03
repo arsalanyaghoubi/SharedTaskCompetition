@@ -2,29 +2,18 @@
 
 import json
 import time
-from openai import OpenAI, RateLimitError
 
 from schema_rag import SchemaRow
 
 
-def _call_with_retry(client, messages, model, temperature, max_retries=5):
+def _call_llm(client, messages, temperature, json_mode=True):
 
-    for attempt in range(max_retries):
-        try:
-            response = client.chat.completions.create(
-                model=model,
-                temperature=temperature,
-                response_format={"type": "json_object"},
-                messages=messages
-            )
-            return response
-        except RateLimitError as e:
-            if attempt == max_retries - 1:
-                raise
-            wait_time = 2 ** attempt  # 1, 2, 4, 8, 16 seconds
-            print(f"\n  Rate limit hit, waiting {wait_time}s...")
-            time.sleep(wait_time)
-    raise Exception("Max retries exceeded")
+    response = client.chat.completions.create(
+        messages=messages,
+        temperature=temperature,
+        response_format={"type": "json_object"} if json_mode else None
+    )
+    return response
 
 
 # Paper's simplified prompt (Appendix A.1) - they couldn't share the full version
@@ -113,8 +102,7 @@ def format_few_shot_examples(examples):
 def extract_observations(
     segment,
     schema_rows,
-    client,
-    model="gpt-4o-mini",
+    call_llm,
     few_shot_examples=None,
     temperature=0.0,
     use_paper_prompt=True
@@ -132,11 +120,10 @@ def extract_observations(
         )
         
         # Call the LLM with paper's approach
-        response = _call_with_retry(
-            client=client,
+        result = call_llm(
             messages=[{"role": "user", "content": user_prompt}],
-            model=model,
-            temperature=temperature
+            temperature=temperature,
+            json_mode=True
         )
     else:
         # Enhanced prompt with system/user separation
@@ -154,17 +141,14 @@ def extract_observations(
             )
         
         # Call the LLM with enhanced approach
-        response = _call_with_retry(
-            client=client,
+        result = call_llm(
             messages=[
                 {"role": "system", "content": EXTRACTION_SYSTEM_PROMPT_ENHANCED},
                 {"role": "user", "content": user_prompt}
             ],
-            model=model,
-            temperature=temperature
+            temperature=temperature,
+            json_mode=True
         )
-    
-    result = response.choices[0].message.content
     
     # Parse the response - handle various formats GPT might return
     observations = _parse_llm_response(result, schema_rows)
@@ -172,11 +156,97 @@ def extract_observations(
     return observations
 
 
+def _clean_llm_response(result):
+    """Strip markdown code blocks, comments, and repair common JSON issues from LLM responses."""
+    import re
+    
+    result = result.strip()
+    
+    # Remove markdown code blocks (```json ... ``` or ``` ... ```)
+    if result.startswith("```"):
+        # Find the end of the first line (might be ```json or just ```)
+        first_newline = result.find("\n")
+        if first_newline != -1:
+            result = result[first_newline + 1:]
+        # Remove trailing ```
+        if result.endswith("```"):
+            result = result[:-3]
+        result = result.strip()
+    
+    # Remove // comments (common with Llama models)
+    # This regex removes // and everything after it until end of line, but not inside strings
+    # Simple approach: remove lines that are just comments, and inline comments after values
+    lines = result.split('\n')
+    cleaned_lines = []
+    for line in lines:
+        # Remove inline comments: "value": "something" // comment
+        # Be careful not to remove // inside string values
+        # Look for // that appears after a quote or comma/bracket
+        comment_match = re.search(r'("[^"]*"|[\[\]{},:])\s*//.*$', line)
+        if comment_match:
+            # Find where the // starts and remove from there
+            comment_pos = line.rfind('//')
+            if comment_pos > 0:
+                line = line[:comment_pos].rstrip()
+        cleaned_lines.append(line)
+    result = '\n'.join(cleaned_lines)
+    
+    # Try to fix truncated JSON by finding the last complete object/array
+    # If JSON doesn't end with } or ], try to repair it
+    result = result.rstrip()
+    if result and not result.endswith('}') and not result.endswith(']'):
+        # Find the last complete structure
+        # Count braces to find where we can safely cut
+        brace_count = 0
+        bracket_count = 0
+        last_valid_pos = -1
+        in_string = False
+        escape_next = False
+        
+        for i, char in enumerate(result):
+            if escape_next:
+                escape_next = False
+                continue
+            if char == '\\':
+                escape_next = True
+                continue
+            if char == '"' and not escape_next:
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            
+            if char == '{':
+                brace_count += 1
+            elif char == '}':
+                brace_count -= 1
+                if brace_count == 0 and bracket_count == 0:
+                    last_valid_pos = i + 1
+            elif char == '[':
+                bracket_count += 1
+            elif char == ']':
+                bracket_count -= 1
+                if brace_count == 0 and bracket_count == 0:
+                    last_valid_pos = i + 1
+        
+        # If we found a valid cut point and it's not at the end, truncate there
+        if last_valid_pos > 0 and last_valid_pos < len(result):
+            result = result[:last_valid_pos]
+    
+    # Remove trailing commas before } or ] (common JSON error)
+    result = re.sub(r',\s*([}\]])', r'\1', result)
+    
+    return result
+
+
 def _parse_llm_response(result, schema_rows):
 
     # Build lookup maps from schema
     id_to_row = {row.id: row for row in schema_rows}
     name_to_row = {row.name.lower(): row for row in schema_rows}
+    
+    # Clean the response (strip markdown code blocks, etc.)
+    result = _clean_llm_response(result)
     
     try:
         parsed = json.loads(result)
@@ -233,8 +303,7 @@ def extract_from_full_transcript(
     transcript,
     segments,
     schema_rag,
-    client,
-    model="gpt-4o-mini",
+    call_llm,
     top_n_schema=60,
     few_shot_examples=None,
     temperature=0.0,
@@ -252,8 +321,7 @@ def extract_from_full_transcript(
         segment_obs = extract_observations(
             segment=segment,
             schema_rows=schema_rows,
-            client=client,
-            model=model,
+            call_llm=call_llm,
             few_shot_examples=few_shot_examples,
             temperature=temperature,
             use_paper_prompt=use_paper_prompt

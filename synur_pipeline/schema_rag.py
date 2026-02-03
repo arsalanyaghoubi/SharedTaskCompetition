@@ -5,6 +5,7 @@ import os
 import numpy as np
 from pathlib import Path
 from dataclasses import dataclass
+from rank_bm25 import BM25Okapi
 
 
 @dataclass
@@ -150,6 +151,70 @@ class SchemaRAG:
 
         schema_list = [row.to_dict() for row in rows]
         return json.dumps(schema_list, indent=2)
+
+
+# Hybrid retrieval combining dense embeddings (semantic) with BM25 (lexical)
+class HybridSchemaRAG(SchemaRAG):
+    
+    def __init__(self, schema_path, embedding_model="text-embedding-3-small", alpha=0.6):
+        # Initialize dense retrieval from parent class
+        super().__init__(schema_path, embedding_model)
+        self.alpha = alpha
+        
+        # Build BM25 index for sparse retrieval
+        self.tokenized_corpus = [
+            self._tokenize(row.to_embedding_text()) 
+            for row in self.schema_rows
+        ]
+        self.bm25 = BM25Okapi(self.tokenized_corpus)
+    
+    def _tokenize(self, text):
+
+        return text.lower().split()
+    
+    def _normalize_scores(self, scores):
+
+        scores = np.array(scores)
+        if scores.max() - scores.min() == 0:
+            return np.zeros_like(scores)
+        return (scores - scores.min()) / (scores.max() - scores.min())
+    
+    def retrieve(self, segment, top_n=60):
+
+        # Dense scores (cosine similarity)
+        segment_embedding = self._embed_single(segment)
+        dense_scores = np.dot(self.schema_embeddings, segment_embedding)
+        
+        # Sparse scores (BM25)
+        tokenized_query = self._tokenize(segment)
+        sparse_scores = np.array(self.bm25.get_scores(tokenized_query))
+        
+        # Normalize and combine
+        dense_norm = self._normalize_scores(dense_scores)
+        sparse_norm = self._normalize_scores(sparse_scores)
+        hybrid_scores = self.alpha * dense_norm + (1 - self.alpha) * sparse_norm
+        
+        # Get top-N indices
+        top_indices = np.argsort(hybrid_scores)[-top_n:][::-1]
+        
+        return [self.schema_rows[i] for i in top_indices]
+    
+    def retrieve_with_scores(self, segment, top_n=60):
+
+        segment_embedding = self._embed_single(segment)
+        dense_scores = np.dot(self.schema_embeddings, segment_embedding)
+        
+        tokenized_query = self._tokenize(segment)
+        sparse_scores = np.array(self.bm25.get_scores(tokenized_query))
+        
+        dense_norm = self._normalize_scores(dense_scores)
+        sparse_norm = self._normalize_scores(sparse_scores)
+        hybrid_scores = self.alpha * dense_norm + (1 - self.alpha) * sparse_norm
+        
+        top_indices = np.argsort(hybrid_scores)[-top_n:][::-1]
+        
+        return [(self.schema_rows[i], hybrid_scores[i]) for i in top_indices]
+
 
 # Embeds the training transcripts and finds the most similar ones for few-shot example selection
 class FewShotRAG:

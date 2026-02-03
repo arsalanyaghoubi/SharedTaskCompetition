@@ -12,6 +12,7 @@ IMPORTANT: What's from the paper vs. our choices:
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 
 @dataclass
@@ -23,11 +24,14 @@ class PipelineConfig:
     dev_path: Path = Path("../Data/dev.jsonl")
 
     # Model settings
-    embedding_model: str = "text-embedding-3-small" # OpenAI embedding model. Can also try text-embedding-3-large or sentence-transformers like all-MiniLM-L6-v2
+    embedding_model: str = "text-embedding-3-small"  # OpenAI embedding model. Can also try text-embedding-3-large or sentence-transformers like all-MiniLM-L6-v2
     
-    top_n_schema_rows: int = 60 # Paper doesn't specify this either. I tested it out and it seems like 60 is a potential sweet spot between performance and cost, but we can try lower or higher. Max is 193.
+    top_n_schema_rows: int = 60  # Paper doesn't specify this either. I tested it out and it seems like 60 is a potential sweet spot between performance and cost, but we can try lower or higher. Max is 193.
     
-    llm_model: str = "gpt-4o-mini" # Cheapest model, can also try gpt-4o, gpt-4.1, gpt-4.1-mini (what paper tried).
+    # LLM Model settings
+    llm_model: str = "gpt-4o-mini"  # Model name for display/logging
+    llm_model_path: Optional[str] = None  # Path to local model folder (if None, uses OpenAI)
+    
     temperature: float = 0.0  # Deterministic outputs for reproducibility
     max_tokens: int = 2048
 
@@ -39,3 +43,8 @@ class PipelineConfig:
     
     # Evaluation
     output_dir: Path = Path("./outputs")
+    
+    def get_model_display_name(self):
+        if self.llm_model_path:
+            return Path(self.llm_model_path).name
+        return self.llm_model
