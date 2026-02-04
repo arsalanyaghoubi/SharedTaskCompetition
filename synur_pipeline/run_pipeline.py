@@ -167,11 +167,26 @@ def call_llm(messages, temperature=0.0, json_mode=False):
         new_tokens = outputs[0][inputs["input_ids"].shape[1]:]
         return _local_tokenizer.decode(new_tokens, skip_special_tokens=True)
     else:
-        # OpenAI
+        # OpenAI with retry logic for rate limits
+        import time
         kwargs = {"model": _model_name, "messages": messages, "temperature": temperature, "max_tokens": _max_tokens}
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
         
+        max_retries = 5
+        for attempt in range(max_retries):
+            try:
+                response = _openai_client.chat.completions.create(**kwargs)
+                return response.choices[0].message.content
+            except Exception as e:
+                if "rate_limit" in str(e).lower() or "429" in str(e):
+                    wait_time = 2 ** attempt  # Exponential backoff: 1, 2, 4, 8, 16 seconds
+                    print(f"\n  Rate limit hit, waiting {wait_time}s (attempt {attempt+1}/{max_retries})...")
+                    time.sleep(wait_time)
+                else:
+                    raise e
+        
+        # Final attempt
         response = _openai_client.chat.completions.create(**kwargs)
         return response.choices[0].message.content
 

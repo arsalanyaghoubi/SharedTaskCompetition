@@ -53,17 +53,17 @@ def load_training_data(data_path, schema_path):
     return data, schema_by_id
 
 
-def create_training_examples(data, schema_by_id, tokenizer, max_seq_length=4096, use_hybrid=True, top_n=60):
+def create_training_examples(data, schema_by_id, tokenizer, max_seq_length=4096, use_hybrid=True, top_n=60, embedding_model="BAAI/bge-base-en-v1.5"):
 
     from schema_rag import SchemaRAG, HybridSchemaRAG
     
     # Initialize RAG for schema retrieval
     schema_path = PROJECT_ROOT / "Data" / "synur_schema.json"
     if use_hybrid:
-        rag = HybridSchemaRAG(schema_path, "BAAI/bge-base-en-v1.5", alpha=0.6)
+        rag = HybridSchemaRAG(schema_path, embedding_model, alpha=0.6)
         print("  Using HYBRID retrieval (BM25 + dense)")
     else:
-        rag = SchemaRAG(schema_path, "BAAI/bge-base-en-v1.5")
+        rag = SchemaRAG(schema_path, embedding_model)
         print("  Using dense-only retrieval")
     
     print(f"  Using top_n={top_n} for full-transcript retrieval")
@@ -193,10 +193,18 @@ def format_for_training(examples, tokenizer):
 def main():
     parser = argparse.ArgumentParser(description="SFT for SYNUR extraction")
     
+    # Data settings
+    parser.add_argument("--data", type=str, default="train",
+                        choices=["train", "train+dev"],
+                        help="Training data: 'train' or 'train+dev'")
+    
     # Model settings
     parser.add_argument("--model-path", type=str, 
                         default="/home1/shared/Models/Llama/Meta-Llama-3-8B-Instruct",
                         help="Path to base model")
+    parser.add_argument("--embedding-model", type=str,
+                        default="BAAI/bge-base-en-v1.5",
+                        help="Embedding model name or local path for RAG")
     parser.add_argument("--output-dir", type=str, default="./sft_output",
                         help="Directory to save fine-tuned model")
     
@@ -316,11 +324,20 @@ def main():
     
     # Load and prepare training data
     print("\nPreparing training data...")
-    data_path = PROJECT_ROOT / "Data" / "train.jsonl"
     schema_path = PROJECT_ROOT / "Data" / "synur_schema.json"
     
-    raw_data, schema_by_id = load_training_data(data_path, schema_path)
-    print(f"Loaded {len(raw_data)} transcripts")
+    # Load data based on --data argument
+    if args.data == "train+dev":
+        train_path = PROJECT_ROOT / "Data" / "train.jsonl"
+        dev_path = PROJECT_ROOT / "Data" / "dev.jsonl"
+        raw_data_train, schema_by_id = load_training_data(train_path, schema_path)
+        raw_data_dev, _ = load_training_data(dev_path, schema_path)
+        raw_data = raw_data_train + raw_data_dev
+        print(f"Loaded {len(raw_data_train)} train + {len(raw_data_dev)} dev = {len(raw_data)} total transcripts")
+    else:
+        data_path = PROJECT_ROOT / "Data" / "train.jsonl"
+        raw_data, schema_by_id = load_training_data(data_path, schema_path)
+        print(f"Loaded {len(raw_data)} transcripts")
     
     # Limit samples for testing
     if args.max_samples is not None:
@@ -329,7 +346,8 @@ def main():
     
     # Create training examples (transcript-level, not segment-level)
     print("Creating training examples...")
-    examples = create_training_examples(raw_data, schema_by_id, tokenizer, args.max_seq_length, use_hybrid=True)
+    print(f"  Embedding model: {args.embedding_model}")
+    examples = create_training_examples(raw_data, schema_by_id, tokenizer, args.max_seq_length, use_hybrid=True, embedding_model=args.embedding_model)
     print(f"Created {len(examples)} training examples (1 per transcript)")
     
     # Format for training
@@ -404,7 +422,7 @@ def main():
         gradient_checkpointing=True,
         report_to="none",  # Disable wandb/tensorboard
         seed=args.seed,
-        dataloader_num_workers=4,
+        dataloader_num_workers=0,  # Avoid NFS temp file issues on shared filesystems
     )
     
     # Data collator
