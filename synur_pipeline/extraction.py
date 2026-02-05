@@ -308,13 +308,15 @@ def extract_from_full_transcript(
     top_n_schema=60,
     few_shot_examples=None,
     temperature=0.0,
-    use_paper_prompt=True
+    use_paper_prompt=True,
+    return_per_segment=False
 ):
 
     all_observations = []
     seen_ids = set()
+    per_segment_data = []  # Track per-segment predictions
     
-    for segment in segments:
+    for seg_idx, segment in enumerate(segments):
         # Retrieve relevant schema rows for this segment
         schema_rows = schema_rag.retrieve(segment, top_n=top_n_schema)
         
@@ -328,12 +330,24 @@ def extract_from_full_transcript(
             use_paper_prompt=use_paper_prompt
         )
         
+        # Store per-segment data before deduplication
+        per_segment_data.append({
+            "segment_idx": seg_idx,
+            "segment_text": segment,
+            "observations": segment_obs
+        })
+        
         # Deduplicate by ID (keep first occurrence)
         for obs in segment_obs:
             obs_id = obs.get("id")
             if obs_id and obs_id not in seen_ids:
-                all_observations.append(obs)
+                # Add segment source info to observation
+                obs_with_source = obs.copy()
+                obs_with_source["_segment_idx"] = seg_idx
+                all_observations.append(obs_with_source)
                 seen_ids.add(obs_id)
     
+    if return_per_segment:
+        return all_observations, per_segment_data
     return all_observations
 

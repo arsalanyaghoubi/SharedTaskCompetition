@@ -19,10 +19,8 @@ ENV/
 
 
 synur_pipeline/sft_output*/
-synur_pipeline/outputs/final/
-synur_pipeline/outputs/gpt-4o/
-synur_pipeline/outputs/gpt-4o-mini/
-synur_pipeline/outputs/Llama-3.3-70B-Instruct/
+synur_pipeline/outputs/gpt-4o*/
+synur_pipeline/outputs/Llama-3.3-70B-Instruct*/
 synur_pipeline/outputs/logs/
 synur_pipeline/outputs/Meta-Llama-3-8B-Instruct*/
 valkyrie-readme.md
