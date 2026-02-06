@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/run_pipeline.py", line 1146, in <module>
+    main()
+  File "/data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/run_pipeline.py", line 1033, in main
+    config = PipelineConfig(
+             ^^^^^^^^^^^^^^^
+TypeError: PipelineConfig.__init__() got an unexpected keyword argument 'base_model_path'

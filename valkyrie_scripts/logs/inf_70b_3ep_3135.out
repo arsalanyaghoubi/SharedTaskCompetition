@@ -1,0 +1,56 @@
+========================================================================
+Job started on cn2 at Wed Feb  4 03:46:28 AM UTC 2026
+Job ID: 3135
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using 3-epoch fine-tuned model: sft_output_70b/sft_20260204_011858/final
+
+Running 70B SFT (3-epoch) model inference on dev set
+============================================================
+SYNUR Extraction Pipeline
+Model: final
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: dev
+Segmentation: Simple rules
+============================================================
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+Loaded PEFT model with base: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Model loaded (device_map=auto)
+Using model: llama-3.3-70b-sft-3ep
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/dev.jsonl.
+Loaded 101 transcripts.
+
+Processing transcripts with llama-3.3-70b-sft-3ep.
+Prompt mode: Enhanced.
+
+[INFO] Filtered 56 malformed observations (missing id/value)
+[INFO] 1395/1451 observations retained for evaluation
+
+============================================================
+RESULTS
+============================================================
+  Precision: 0.7392
+  Recall:    0.7871
+  F1:        0.7624  (76.2%)
+
+Files saved to: final/dev_BGE_top60_hybrid0.6_enhanced/
+  predictions_20260204_060622.json  (for error analysis)
+  submission_20260204_060622.jsonl  (official format)
+  summary_20260204_060622.json      (config + metrics)
+
+========================================================================
+Job finished at Wed Feb  4 06:06:26 AM UTC 2026
+========================================================================

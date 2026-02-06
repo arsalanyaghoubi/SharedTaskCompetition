@@ -1,0 +1,90 @@
+========================================================================
+Job started on cn7 at Fri Feb  6 04:07:22 AM UTC 2026
+Job ID: 3170
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+==============================================
+Llama-3.3-70B-Instruct (Base) on TEST set
+==============================================
+Model: /data/shared/models/llama/Llama-3.3-70B-Instruct
+
+============================================================
+SYNUR Extraction Pipeline
+Model: Llama-3.3-70B-Instruct
+Model path: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Quantization: 8-bit
+Embedding: /data/projects/mtootooni_01/SharedTaskCompetition/models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Dense only
+Data: test
+Temperature: 0.0
+Segmentation: Simple rules
+============================================================
+Initializing LLM
+Loading model from /data/shared/models/llama/Llama-3.3-70B-Instruct
+  Using 8-bit quantization
+Model loaded (device_map=auto)
+Using model: gpt-4o-mini
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/SYNUR_testset_input.jsonl.
+Loaded 199 transcripts.
+
+Processing transcripts with gpt-4o-mini.
+Prompt mode: Enhanced.
+  [WARNING] JSON parse error: Expecting value: line 56 column 5 (char 1192)
+  [WARNING] Raw response: {
+  "observations": [
+    {
+      "id": "130",
+      "name": "Cognitive status",
+      "value_type": "SINGLE_SELECT",
+      "value": "Alert"
+    },
+    {
+      "id": "129",
+      "name": "Incontinence status",
+      "value_type": "SINGLE_SELECT",
+      "value": "continent"
+    },
+    {
+      "id": "36",
+      "name": "Gastrointestinal status",
+      "value_type": "SINGLE_SELECT",
+      "value": "within normal limits"
+    },
+    {
+      "id": "89",
+      "name": "Mobility",
+      "value_type": "S...
+  [WARNING] JSON parse error: Expecting value: line 14 column 5 (char 251)
+  [WARNING] Raw response: {
+  "observations": [
+    {
+      "id": "65",
+      "name": "Fluid restriction",
+      "value_type": "SINGLE_SELECT",
+      "value": "No"
+    },
+    {
+      "id": "73",
+      "name": "Urine output",
+      "value_type": "NUMERIC",
+      "value":  
+    },
+    {
+      "id": "139",
+      "name": "Urine appearance",
+      "value_type": "MULTI_SELECT",
+      "value": [
+        "cloudy",
+        "dark"
+      ]
+    },
+    {
+      "id": "183",
+      "name": "Urine output unit",
+      "value_type": "SINGL...

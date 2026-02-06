@@ -17,12 +17,16 @@ ENV/
 .vscode/
 .idea/
 
-
-synur_pipeline/sft_output*/
-synur_pipeline/outputs/gpt-4o*/
-synur_pipeline/outputs/Llama-3.3-70B-Instruct*/
-synur_pipeline/outputs/logs/
-synur_pipeline/outputs/Meta-Llama-3-8B-Instruct*/
-valkyrie-readme.md
-valkyrie_scripts/
+# Large model weights
 models/
+
+# SFT outputs
+synur_pipeline/sft_output*/*/checkpoint-*/
+synur_pipeline/sft_output*/*/final/*.safetensors
+synur_pipeline/sft_output*/*/final/*.bin
+
+# Outputs
+synur_pipeline/outputs/logs/
+
+# Private notes
+valkyrie-readme.md

@@ -1,0 +1,42 @@
+========================================================================
+Self-Consistency Run 2/3 - Seed 123
+Job started on cn3 at Wed Feb  4 11:15:40 PM UTC 2026
+Job ID: 3151
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using 3-epoch fine-tuned model: sft_output_70b/sft_20260204_011858/final
+Temperature: 0.3, Seed: 123
+
+============================================================
+SYNUR Extraction Pipeline
+Model: final
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: dev
+Temperature: 0.3
+Seed: 2
+Segmentation: Simple rules
+============================================================
+
+Random seed set to 2
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+Loaded PEFT model with base: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Model loaded (device_map=auto)
+Using model: llama-3.3-70b-sft-3ep-sc2
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/dev.jsonl.
+Loaded 101 transcripts.
+
+Processing transcripts with llama-3.3-70b-sft-3ep-sc2.
+Prompt mode: Enhanced.

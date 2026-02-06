@@ -1,0 +1,30 @@
+========================================================================
+Job started on cn1 at Wed Feb  4 09:53:57 PM UTC 2026
+Job ID: 3148
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using 3-epoch fine-tuned model: sft_output_70b/sft_20260204_011858/final
+
+Running 70B SFT (3-epoch) model inference on dev set
+============================================================
+SYNUR Extraction Pipeline
+Model: final
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: dev
+Segmentation: Simple rules
+============================================================
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+
+========================================================================
+Job finished at Wed Feb  4 09:54:06 PM UTC 2026
+========================================================================

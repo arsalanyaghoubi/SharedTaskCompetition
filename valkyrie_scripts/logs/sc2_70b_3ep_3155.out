@@ -1,0 +1,96 @@
+========================================================================
+Self-Consistency Run 2/3 - Seed 123
+Job started on cn1 at Thu Feb  5 12:20:10 AM UTC 2026
+Job ID: 3155
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using 3-epoch fine-tuned model: sft_output_70b/sft_20260204_011858/final
+Temperature: 0.3, Seed: 123
+
+============================================================
+SYNUR Extraction Pipeline
+Model: final
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: dev
+Temperature: 0.3
+Seed: 2
+Segmentation: Simple rules
+============================================================
+
+Random seed set to 2
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+Loaded PEFT model with base: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Model loaded (device_map=auto)
+Using model: llama-3.3-70b-sft-3ep-sc2
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/dev.jsonl.
+Loaded 101 transcripts.
+
+Processing transcripts with llama-3.3-70b-sft-3ep-sc2.
+Prompt mode: Enhanced.
+  [WARNING] JSON parse error: Unterminated string starting at: line 630 column 14 (char 12189)
+  [WARNING] Raw response: {"observations": [
+  {
+    "id": "88",
+    "value_type": "SINGLE_SELECT",
+    "name": "Capillary refill",
+    "value": "sluggish"
+  },
+  {
+    "id": "128",
+    "value_type": "SINGLE_SELECT",
+    "name": "Bowel sounds",
+    "value": "hypoactive in all quadrants"
+  },
+  {
+    "id": "99",
+    "value_type": "SINGLE_SELECT",
+    "name": "Urine odor",
+    "value": "foul"
+  },
+  {
+    "id": "88",
+    "value_type": "SINGLE_SELECT",
+    "name": "Capillary refill",
+    "value": "sluggish"
+  },
+  {
+    "id...
+
+============================================================
+SCHEMA VALIDATION RESULTS
+============================================================
+Total observations processed: 1484
+- Structural invalid (missing id/value): 49
+- Invalid schema ID (hallucinated): 0
+- Case mismatches fixed: 0
+- Invalid enum values removed: 7
+Valid observations retained: 1428
+
+============================================================
+RESULTS
+============================================================
+  Precision: 0.7240
+  Recall:    0.7849
+  F1:        0.7532  (75.3%)
+
+Files saved to: final/dev_BGE_top60_hybrid0.6_enhanced/
+  predictions_20260205_020844.json  (for error analysis)
+  submission_20260205_020844.jsonl  (official format)
+  summary_20260205_020844.json      (config + metrics)
+
+========================================================================
+Job finished at Thu Feb  5 02:08:45 AM UTC 2026
+========================================================================

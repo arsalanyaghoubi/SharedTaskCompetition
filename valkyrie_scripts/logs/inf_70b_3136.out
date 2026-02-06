@@ -1,0 +1,54 @@
+========================================================================
+Job started on cn3 at Wed Feb  4 03:49:18 AM UTC 2026
+Job ID: 3136
+GPU(s) allocated: 0
+========================================================================
+
+NVIDIA H200 NVL, 143771 MiB
+
+Running 70B base model inference on dev set
+============================================================
+SYNUR Extraction Pipeline
+Model: Llama-3.3-70B-Instruct
+Model path: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: dev
+Segmentation: Simple rules
+============================================================
+Initializing LLM
+Loading model from /data/shared/models/llama/Llama-3.3-70B-Instruct
+  Using 4-bit quantization (NF4)
+Model loaded (device_map=auto)
+Using model: llama-3.3-70b
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/dev.jsonl.
+Loaded 101 transcripts.
+
+Processing transcripts with llama-3.3-70b.
+Prompt mode: Enhanced.
+
+[INFO] Filtered 22 malformed observations (missing id/value)
+[INFO] 1479/1501 observations retained for evaluation
+
+============================================================
+RESULTS
+============================================================
+  Precision: 0.7019
+  Recall:    0.7878
+  F1:        0.7424  (74.2%)
+
+Files saved to: Llama-3.3-70B-Instruct/dev_BGE_top60_hybrid0.6_enhanced/
+  predictions_20260204_054748.json  (for error analysis)
+  submission_20260204_054748.jsonl  (official format)
+  summary_20260204_054748.json      (config + metrics)
+
+========================================================================
+Job finished at Wed Feb  4 05:47:59 AM UTC 2026
+========================================================================

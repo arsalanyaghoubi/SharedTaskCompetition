@@ -1,0 +1,154 @@
+========================================================================
+Job started on cn1 at Thu Feb  5 11:18:27 PM UTC 2026
+Job ID: 3168
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+==============================================
+Verification Pass with Llama-3.3-70B-Instruct
+Input: SC-Voted TEST Predictions (train+dev SFT)
+==============================================
+Input: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_102723/test_BGE_top60_hybrid0.6_enhanced/voted_predictions.json
+Model: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Output: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_102723/test_BGE_top60_hybrid0.6_enhanced/verified_predictions_70b.json
+
+Initializing local model: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Loading verification model from /data/shared/models/llama/Llama-3.3-70B-Instruct
+Verification model loaded (device_map=auto)
+
+============================================================
+VERIFICATION PASS
+============================================================
+Predictions: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_102723/test_BGE_top60_hybrid0.6_enhanced/voted_predictions.json
+Data: /data/projects/mtootooni_01/SharedTaskCompetition/Data/SYNUR_testset_input.jsonl
+Verifier model: Llama-3.3-70B-Instruct
+Mode: Transcript-level
+Backend: local
+
+REMOVED: ID 36 - Gastrointestinal status = within normal limits
+REMOVED: ID 73 - Urine output = 0
+REMOVED: ID 58 - Capillary refill = sluggish
+REMOVED: ID 140 - Nasal discharge = Clear
+REMOVED: ID 24 - Temperature source = oral
+REMOVED: ID 86 - Assistance with personal hygiene = Assisted
+REMOVED: ID 33 - Heart rate = 85
+REMOVED: ID 24 - Temperature source = oral
+REMOVED: ID 11 - Blood pressure = None
+REMOVED: ID 25 - Nutrition status = inadequate
+REMOVED: ID 117 - Patient safety = No
+REMOVED: ID 109 - Assistance with toileting = none
+REMOVED: ID 117 - Patient safety = No
+REMOVED: ID 19 - Temperature = None
+REMOVED: ID 33 - Heart rate = None
+REMOVED: ID 67 - Dyspnea = Mild
+REMOVED: ID 24 - Temperature source = oral
+REMOVED: ID 86 - Assistance with personal hygiene = Assisted
+REMOVED: ID 111 - Fall risk total = 1
+REMOVED: ID 132 - Joint deformity = Mild
+REMOVED: ID 154 - Neck tenderness = Not Tender
+REMOVED: ID 67 - Dyspnea = None
+REMOVED: ID 41 - Speech clarity = clear
+REMOVED: ID 129 - Incontinence status = continent
+REMOVED: ID 143 - Moisture level = occasionally moist
+REMOVED: ID 3 - Respiratory interventions = ['incentive spirometer usage']
+REMOVED: ID 30 - Nausea = No
+REMOVED: ID 134 - Diarrhea episode = None
+REMOVED: ID 181 - Pulse oximetry unit = %
+REMOVED: ID 109 - Assistance with toileting = none
+REMOVED: ID 130 - Cognitive status = Disoriented to time
+REMOVED: ID 130 - Cognitive status = Alert with general confusion and forgetfulness
+REMOVED: ID 86 - Assistance with personal hygiene = Assisted
+REMOVED: ID 177 - Urinary symptoms = ['difficulty urinating']
+REMOVED: ID 67 - Dyspnea = Severe
+REMOVED: ID 145 - Gait and transferring = Assisted
+REMOVED: ID 150 - Behavior = Agitated and combative
+REMOVED: ID 164 - Level of assistance = moderate assist
+REMOVED: ID 130 - Cognitive status = Alert with general confusion and forgetfulness
+REMOVED: ID 90 - Glasgow coma score - best motor response = obeys commands
+REMOVED: ID 83 - Facial droop = left facial droop
+REMOVED: ID 128 - Bowel sounds = present in all quadrants
+REMOVED: ID 132 - Joint deformity = Severe
+REMOVED: ID 177 - Urinary symptoms = ['difficulty urinating']
+REMOVED: ID 176 - Pressure injury stage = Unstageable
+REMOVED: ID 116 - Work of breathing = Increased
+REMOVED: ID 68 - Feeding assistance = Partial assistance required
+REMOVED: ID 78 - History of falls = Yes
+REMOVED: ID 178 - Oxygen saturation unit = %
+REMOVED: ID 90 - Glasgow coma score - best motor response = withdraws from pain
+REMOVED: ID 133 - Dressing condition = Clean
+REMOVED: ID 63 - Chest expansion = equal
+REMOVED: ID 107 - Fall risk identification = Medium
+REMOVED: ID 130 - Cognitive status = Alert with general confusion and forgetfulness
+REMOVED: ID 110 - Glasgow coma score - best verbal response = oriented
+REMOVED: ID 21 - Ambulatory aid = walker
+REMOVED: ID 89 - Mobility = Limited
+REMOVED: ID 93 - Oxygen delivery device = nasal cannula
+REMOVED: ID 150 - Behavior = Agitated and combative
+REMOVED: ID 90 - Glasgow coma score - best motor response = obeys commands
+REMOVED: ID 130 - Cognitive status = Alert with general confusion and forgetfulness
+REMOVED: ID 99 - Urine odor = foul
+REMOVED: ID 67 - Dyspnea = Mild
+REMOVED: ID 6 - Weightbearing status = ['non-weightbearing']
+REMOVED: ID 120 - Fall risk assessment = Morse fall risk assessment
+REMOVED: ID 117 - Patient safety = No
+REMOVED: ID 67 - Dyspnea = Severe
+REMOVED: ID 130 - Cognitive status = Alert with general confusion and forgetfulness
+REMOVED: ID 116 - Work of breathing = Increased
+REMOVED: ID 107 - Fall risk identification = High
+REMOVED: ID 24 - Temperature source = oral
+REMOVED: ID 67 - Dyspnea = Moderate
+REMOVED: ID 67 - Dyspnea = Mild
+REMOVED: ID 78 - History of falls = Yes
+REMOVED: ID 10 - Oxygen saturation = 0
+REMOVED: ID 161 - Fraction of inspired oxygen (FiO2) = 0
+REMOVED: ID 116 - Work of breathing = Increased
+REMOVED: ID 128 - Bowel sounds = nondistended
+REMOVED: ID 33 - Heart rate = 0
+REMOVED: ID 187 - Fraction of inspired oxygen (FiO2) unit = decimal
+REMOVED: ID 6 - Weightbearing status = ['non-weightbearing']
+REMOVED: ID 65 - Fluid restriction = Yes
+REMOVED: ID 63 - Chest expansion = equal
+REMOVED: ID 155 - Range of motion exercise = 
+REMOVED: ID 67 - Dyspnea = Mild
+REMOVED: ID 168 - Heart rate source = monitor
+REMOVED: ID 51 - Pain severity = 0 out of 10
+REMOVED: ID 36 - Gastrointestinal status = distended
+REMOVED: ID 102 - Joint swelling = Yes
+REMOVED: ID 135 - Glasgow coma score - eye opening = spontaneous
+REMOVED: ID 3 - Respiratory interventions = ['raising head of bed']
+REMOVED: ID 127 - Patient education = 
+REMOVED: ID 180 - Heart rate unit = bpm
+REMOVED: ID 52 - Gas passage = Yes
+REMOVED: ID 182 - Respirations unit = breaths per minute
+REMOVED: ID 125 - Sensory symptoms = ['Numbness and tingling in lower extremities']
+REMOVED: ID 92 - Patient weight = 0
+REMOVED: ID 32 - Constipation episode = No
+REMOVED: ID 140 - Nasal discharge = None
+REMOVED: ID 152 - Nasogastric tube status = Not Inserted
+REMOVED: ID 34 - Pulse oximetry = 0
+REMOVED: ID 126 - Patient height = 0
+REMOVED: ID 49 - Peripheral pulses = 
+REMOVED: ID 91 - PO intake = 
+REMOVED: ID 55 - Mean arterial pressure (MAP) = 0
+REMOVED: ID 185 - PO intake unit = mL
+REMOVED: ID 192 - Emesis volume unit = mL
+REMOVED: ID 184 - Mean arterial pressure (MAP) unit = mmHg
+REMOVED: ID 15 - Blood pressure location = right arm
+REMOVED: ID 3 - Respiratory interventions = ['raising head of bed']
+REMOVED: ID 33 - Heart rate = None
+REMOVED: ID 180 - Heart rate unit = bpm
+REMOVED: ID 141 - Meal consumption = Partial
+
+============================================================
+VERIFICATION SUMMARY
+============================================================
+Total observations: 2253
+Kept: 2140 (95.0%)
+Removed: 113 (5.0%)
+
+Saved verified predictions to: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_102723/test_BGE_top60_hybrid0.6_enhanced/verified_predictions_70b.json
+Created submission file: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_102723/test_BGE_top60_hybrid0.6_enhanced/verified_submission_70b.jsonl
+
+========================================================================
+Job finished at Thu Feb  5 11:48:41 PM UTC 2026
+========================================================================

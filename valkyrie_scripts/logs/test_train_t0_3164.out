@@ -1,0 +1,40 @@
+========================================================================
+TEST SET INFERENCE - Train-Only SFT Model (3ep) - Temperature 0.0
+Job started on cn8 at Thu Feb  5 08:43:55 PM UTC 2026
+Job ID: 3164
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using Train-only fine-tuned model: sft_output_70b/sft_20260204_011858/final
+Temperature: 0.0 (deterministic)
+Data: TEST SET
+
+============================================================
+SYNUR Extraction Pipeline
+Model: Llama-3.3-70B-Instruct+sft_20260204_011858
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: test
+Temperature: 0.0
+Segmentation: Simple rules
+============================================================
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+Loaded PEFT model with base: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Model loaded (device_map=auto)
+Using model: llama-70b-sft-train
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/SYNUR_testset_input.jsonl.
+Loaded 199 transcripts.
+
+Processing transcripts with llama-70b-sft-train.
+Prompt mode: Enhanced.

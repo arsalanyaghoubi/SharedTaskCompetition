@@ -1,0 +1,71 @@
+========================================================================
+Job started on cn2 at Wed Feb  4 10:27:05 AM UTC 2026
+Job ID: 3141
+Requested CPUs: 16
+Requested Memory: 131072
+GPU(s) allocated: 0
+========================================================================
+
+Environment info:
+PyTorch: 2.8.0+cu128, CUDA: True
+NVIDIA H200 NVL, 143771 MiB
+
+Starting SFT training on TRAIN+DEV with 3 epochs
+
+============================================================
+SYNUR SFT Training
+============================================================
+Base model: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Output dir: sft_output_70b_traindev/sft_20260204_102723
+Epochs: 3
+Batch size: 1 x 8 = 8
+Learning rate: 1e-05
+LoRA rank: 16
+Quantization: 4-bit
+============================================================
+
+Loading tokenizer...
+Loading model...
+Configuring LoRA...
+trainable params: 207,093,760 || all params: 70,760,800,256 || trainable%: 0.2927
+
+Preparing training data...
+Loaded 122 train + 101 dev = 223 total transcripts
+Creating training examples...
+  Embedding model: ../models/bge-base-en-v1.5
+  Using HYBRID retrieval (BM25 + dense)
+  Using top_n=60 for full-transcript retrieval
+  Gold observation coverage: 2485/3000 (82.8%) - 515 missed
+Created 223 training examples (1 per transcript)
+Tokenizing with loss masking...
+Dataset size: 223
+Sample token length: 4096
+
+============================================================
+Starting training...
+============================================================
+{'loss': 0.2954, 'grad_norm': 2.8373942375183105, 'learning_rate': 1e-05, 'epoch': 0.36}
+{'loss': 0.2036, 'grad_norm': 1.1551527976989746, 'learning_rate': 9.567727288213005e-06, 'epoch': 0.72}
+{'loss': 0.1471, 'grad_norm': 0.633476197719574, 'learning_rate': 8.345653031794292e-06, 'epoch': 1.07}
+{'loss': 0.1122, 'grad_norm': 0.9929419755935669, 'learning_rate': 6.545084971874738e-06, 'epoch': 1.43}
+{'loss': 0.114, 'grad_norm': 0.6166178584098816, 'learning_rate': 4.477357683661734e-06, 'epoch': 1.79}
+{'loss': 0.1171, 'grad_norm': 0.5501459836959839, 'learning_rate': 2.5000000000000015e-06, 'epoch': 2.14}
+{'loss': 0.1034, 'grad_norm': 0.8075435161590576, 'learning_rate': 9.549150281252633e-07, 'epoch': 2.5}
+{'loss': 0.1006, 'grad_norm': 0.9860483407974243, 'learning_rate': 1.0926199633097156e-07, 'epoch': 2.86}
+{'train_runtime': 4354.6136, 'train_samples_per_second': 0.154, 'train_steps_per_second': 0.019, 'train_loss': 0.14761718185175032, 'epoch': 3.0}
+
+Saving final model...
+
+Training complete!
+Model saved to: sft_output_70b_traindev/sft_20260204_102723/final
+Config saved to: sft_output_70b_traindev/sft_20260204_102723/training_config.json
+
+To use the fine-tuned model:
+python run_pipeline.py --model llama-3-8b-sft --model-path sft_output_70b_traindev/sft_20260204_102723/final ...
+
+========================================================================
+Job finished at Wed Feb  4 12:12:36 PM UTC 2026
+========================================================================
+
+Resource usage summary:
+(sacct unavailable)

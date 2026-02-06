@@ -1,0 +1,245 @@
+Loaded schema with 193 concepts
+Loaded 122 transcripts from train.jsonl
+Loaded 122 transcripts from predictions_20260202_223238.json
+
+======================================================================
+ERROR ANALYSIS REPORT
+======================================================================
+
+Total Predictions: 2153
+Total Gold Observations: 1685
+Correct: 930 (43.2% of predictions)
+  Value Errors (STRING):        163
+  Value Errors (SELECT):        51
+  Hallucinated Observation:     1009
+  Missed Observation:           541
+
+----------------------------------------------------------------------
+ERROR TYPE BREAKDOWN
+----------------------------------------------------------------------
+Category   Error Type                           Count  Description
+----------------------------------------------------------------------
+STRING     over_extraction_from_transcript          5  Correct + extra text from transcript
+STRING     wrong_span_from_transcript              10  Wrong text from transcript
+STRING     hallucinated_value                       4  Made-up text (gold IS in transcript)
+STRING     semantic_mismatch                        1  Both pred & gold are interpretations
+STRING     wrong_value_other                      143  Miscellaneous value mismatch
+SELECT     partial_match                           27  Some options right, some wrong
+SELECT     wrong_valid_option                      24  Valid option but not in gold
+GENERAL    hallucinated_observation              1009  Predicted ID not in gold
+GENERAL    missed                                 541  Gold observation not predicted
+
+======================================================================
+SAMPLE ERRORS
+======================================================================
+
+--- OVER-EXTRACTION (from transcript) (5 total) ---
+    Model pulled correct answer + extra text from transcript
+
+  [18] ID 29: Pain management
+    Predicted: 'acetaminophen every 6 hours'
+    Gold:      'acetaminophen'
+    Extra:     'every 6 hours'
+
+  [129] ID 167: Pain description
+    Predicted: 'chronic dull ache'
+    Gold:      'chronic'
+    Extra:     'dull ache'
+
+  [70] ID 91: PO intake
+    Predicted: '250 mLs'
+    Gold:      '250'
+    Extra:     'mls'
+
+  [27] ID 91: PO intake
+    Predicted: '600 mL'
+    Gold:      '600'
+    Extra:     'ml'
+
+  [83] ID 167: Pain description
+    Predicted: 'localized to her shoulders, possibly due to her positioning'
+    Gold:      'localized to her shoulders'
+    Extra:     ', possibly due to her positioning'
+
+
+--- WRONG SPAN (from transcript) (10 total) ---
+    Wrong text, but it exists in transcript
+
+  [104] ID 16: Braden scale assessment
+    Predicted: 'Braden scale assessment'
+    Gold:      'Performed'
+
+  [199] ID 26: Delirium symptoms
+    Predicted: 'advanced dementia symptoms'
+    Gold:      'confusion and disorientation'
+
+  [138] ID 26: Delirium symptoms
+    Predicted: 'delirium or an acute change from their baseline mental state'
+    Gold:      'onset of delirium'
+
+  [114] ID 16: Braden scale assessment
+    Predicted: 'being monitored'
+    Gold:      'performed'
+
+  [208] ID 29: Pain management
+    Predicted: 'ensuring he's comfortable'
+    Gold:      'ensuring he’s comfortable'
+
+  ... and 5 more
+
+
+--- HALLUCINATED VALUE (4 total) ---
+    Predicted text not found in transcript (but gold IS in transcript)
+
+  [120] ID 167: Pain description
+    Predicted: 'Not mentioned'
+    Gold:      'sharp'
+
+  [208] ID 127: Patient education
+    Predicted: 'not mentioned'
+    Gold:      'mobility and transfer techniques'
+
+  [208] ID 162: Patient identification
+    Predicted: 'not mentioned'
+    Gold:      'Johnson'
+
+  [146] ID 31: Secondary diagnosis
+    Predicted: 'none'
+    Gold:      'autonomic dysfunction'
+
+
+--- SEMANTIC MISMATCH (1 total) ---
+    Both pred and gold are interpretations, not literal extractions - format differs
+
+  [200] ID 23: Muscle contractures
+    Predicted: 'present'
+    Gold:      'Yes'
+
+
+--- OTHER VALUE ERROR (143 total) ---
+    Miscellaneous value mismatch
+
+  [76] ID 89: Mobility
+    Predicted: 'Slightly limited'
+    Gold:      'Mildly impaired'
+
+  [76] ID 132: Joint deformity
+    Predicted: 'Present'
+    Gold:      'Mild'
+
+  [76] ID 37: Motor strength
+    Predicted: 'Weak'
+    Gold:      'Generalized weakness'
+
+  [203] ID 130: Cognitive status
+    Predicted: 'Alert'
+    Gold:      'Alert with general confusion and forgetfulness'
+
+  [72] ID 151: Edema
+    Predicted: 'present'
+    Gold:      'Bilateral pedal and ankle edema'
+
+  ... and 138 more
+
+
+--- PARTIAL MATCH (MULTI_SELECT) (27 total) ---
+    Got some options right, missed/added others
+
+  [192] ID 3: Respiratory interventions
+    Predicted: ['raising head of bed', 'turn cough', 'deep breathe', 'incentive spirometer usage']
+    Gold:      ['turn cough', 'incentive spirometer usage', 'deep breathe']
+    Matched: ['deep breathe', 'incentive spirometer usage', 'turn cough'], Missed: [], Extra: ['raising head of bed']
+
+  [203] ID 148: Gastrointestinal symptoms
+    Predicted: ['diarrhea', 'nausea']
+    Gold:      ['diarrhea']
+    Matched: ['diarrhea'], Missed: [], Extra: ['nausea']
+
+  [144] ID 3: Respiratory interventions
+    Predicted: ['raising head of bed', 'turn cough']
+    Gold:      ['raising head of bed']
+    Matched: ['raising head of bed'], Missed: [], Extra: ['turn cough']
+
+  [129] ID 122: Dental status
+    Predicted: ['Missing teeth', 'Dentures are in place', 'Active denture care']
+    Gold:      ['Missing teeth', 'Denture care', 'Upper dentures', 'Lower dentures']
+    Matched: ['missing teeth'], Missed: ['upper dentures', 'lower dentures', 'denture care'], Extra: ['dentures are in place', 'active denture care']
+
+  [198] ID 3: Respiratory interventions
+    Predicted: ['raising head of bed', 'turn cough']
+    Gold:      ['raising head of bed']
+    Matched: ['raising head of bed'], Missed: [], Extra: ['turn cough']
+
+  ... and 22 more
+
+
+--- WRONG OPTION (valid but incorrect) (24 total) ---
+    Chose valid schema option that wasn't in gold
+
+  [139] ID 148: Gastrointestinal symptoms
+    Predicted: ['dehydration', 'nutritional imbalances']
+    Gold:      vomiting
+
+  [203] ID 157: Bowel movement description
+    Predicted: ['loose', 'large']
+    Gold:      amount: large
+
+  [162] ID 3: Respiratory interventions
+    Predicted: ['respiratory function']
+    Gold:      incentive spirometer usage
+
+  [102] ID 125: Sensory symptoms
+    Predicted: []
+    Gold:      numbness and tingling in lower extremities
+
+  [31] ID 148: Gastrointestinal symptoms
+    Predicted: ['gastrointestinal']
+    Gold:      nausea
+
+  ... and 19 more
+
+
+--- HALLUCINATED OBSERVATIONS (1009 total) ---
+    Model predicted an observation ID that exists in schema but wasn't in gold
+
+  Most common (top 15):
+    29x  ID 117: Patient safety
+    23x  ID 107: Fall risk identification
+    22x  ID 146: Patient position
+    21x  ID 3: Respiratory interventions
+    19x  ID 65: Fluid restriction
+    19x  ID 36: Gastrointestinal status
+    18x  ID 6: Weightbearing status
+    17x  ID 116: Work of breathing
+    17x  ID 130: Cognitive status
+    16x  ID 92: Patient weight
+    15x  ID 51: Pain severity
+    15x  ID 41: Speech clarity
+    14x  ID 77: Memory status
+    13x  ID 145: Gait and transferring
+    13x  ID 151: Edema
+
+
+--- MISSED OBSERVATIONS (541 total) ---
+    Gold observations that the model didn't predict at all
+
+  Most common (top 15):
+    24x  ID 178: Oxygen saturation unit
+    22x  ID 31: Secondary diagnosis
+    18x  ID 89: Mobility
+    15x  ID 130: Cognitive status
+    15x  ID 40: Orientation
+    14x  ID 148: Gastrointestinal symptoms
+    14x  ID 120: Fall risk assessment
+    13x  ID 180: Heart rate unit
+    12x  ID 189: Oxygen flow rate unit
+    11x  ID 78: History of falls
+    11x  ID 0: Broset violence checklist - confusion
+    10x  ID 117: Patient safety
+    9x  ID 136: Respiratory equipment
+    9x  ID 30: Nausea
+    9x  ID 183: Urine output unit
+
+======================================================================
+
+Full error details saved to: predictions_20260202_223238_errors.json

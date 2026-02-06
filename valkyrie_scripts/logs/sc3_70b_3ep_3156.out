@@ -1,0 +1,68 @@
+========================================================================
+Self-Consistency Run 3/3 - Seed 456
+Job started on cn1 at Thu Feb  5 02:08:45 AM UTC 2026
+Job ID: 3156
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using 3-epoch fine-tuned model: sft_output_70b/sft_20260204_011858/final
+Temperature: 0.3, Seed: 456
+
+============================================================
+SYNUR Extraction Pipeline
+Model: final
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: dev
+Temperature: 0.3
+Seed: 3
+Segmentation: Simple rules
+============================================================
+
+Random seed set to 3
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+Loaded PEFT model with base: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Model loaded (device_map=auto)
+Using model: llama-3.3-70b-sft-3ep-sc3
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/dev.jsonl.
+Loaded 101 transcripts.
+
+Processing transcripts with llama-3.3-70b-sft-3ep-sc3.
+Prompt mode: Enhanced.
+
+============================================================
+SCHEMA VALIDATION RESULTS
+============================================================
+Total observations processed: 1383
+- Structural invalid (missing id/value): 17
+- Invalid schema ID (hallucinated): 0
+- Case mismatches fixed: 0
+- Invalid enum values removed: 5
+Valid observations retained: 1361
+
+============================================================
+RESULTS
+============================================================
+  Precision: 0.7538
+  Recall:    0.7799
+  F1:        0.7666  (76.7%)
+
+Files saved to: final/dev_BGE_top60_hybrid0.6_enhanced/
+  predictions_20260205_034609.json  (for error analysis)
+  submission_20260205_034609.jsonl  (official format)
+  summary_20260205_034609.json      (config + metrics)
+
+========================================================================
+Job finished at Thu Feb  5 03:46:10 AM UTC 2026
+========================================================================

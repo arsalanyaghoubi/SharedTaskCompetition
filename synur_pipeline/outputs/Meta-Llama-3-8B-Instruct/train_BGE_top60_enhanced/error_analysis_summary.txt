@@ -1,0 +1,256 @@
+Loaded schema with 193 concepts
+Loaded 122 transcripts from train.jsonl
+Loaded 122 transcripts from predictions_20260202_203044.json
+
+======================================================================
+ERROR ANALYSIS REPORT
+======================================================================
+
+Total Predictions: 2438
+Total Gold Observations: 1685
+Correct: 929 (38.1% of predictions)
+  Value Errors (STRING):        161
+  Value Errors (SELECT):        39
+  Hallucinated Observation:     1309
+  Missed Observation:           556
+
+----------------------------------------------------------------------
+ERROR TYPE BREAKDOWN
+----------------------------------------------------------------------
+Category   Error Type                           Count  Description
+----------------------------------------------------------------------
+STRING     over_extraction_from_transcript          4  Correct + extra text from transcript
+STRING     under_extraction                         1  Didn't pull enough text
+STRING     wrong_span_from_transcript               9  Wrong text from transcript
+STRING     hallucinated_value                       6  Made-up text (gold IS in transcript)
+STRING     semantic_mismatch                        1  Both pred & gold are interpretations
+STRING     wrong_value_other                      140  Miscellaneous value mismatch
+SELECT     partial_match                           24  Some options right, some wrong
+SELECT     wrong_valid_option                      15  Valid option but not in gold
+GENERAL    hallucinated_observation              1309  Predicted ID not in gold
+GENERAL    missed                                 556  Gold observation not predicted
+
+======================================================================
+SAMPLE ERRORS
+======================================================================
+
+--- OVER-EXTRACTION (from transcript) (4 total) ---
+    Model pulled correct answer + extra text from transcript
+
+  [129] ID 167: Pain description
+    Predicted: 'chronic dull ache'
+    Gold:      'chronic'
+    Extra:     'dull ache'
+
+  [195] ID 26: Delirium symptoms
+    Predicted: 'acute confusion and delirium'
+    Gold:      'delirium'
+    Extra:     'acute confusion and'
+
+  [99] ID 26: Delirium symptoms
+    Predicted: 'delirium—there's confusion and agitation'
+    Gold:      'confusion and agitation'
+    Extra:     'delirium—there's'
+
+  [83] ID 167: Pain description
+    Predicted: 'localized to her shoulders, possibly due to her positioning'
+    Gold:      'localized to her shoulders'
+    Extra:     ', possibly due to her positioning'
+
+
+--- UNDER-EXTRACTION (1 total) ---
+    Model didn't pull enough text
+
+  [120] ID 167: Pain description
+    Predicted: ''
+    Gold:      'sharp'
+    Missing:   'sharp'
+
+
+--- WRONG SPAN (from transcript) (9 total) ---
+    Wrong text, but it exists in transcript
+
+  [14] ID 26: Delirium symptoms
+    Predicted: 'disoriented and irritable'
+    Gold:      'signs of delirium'
+
+  [104] ID 16: Braden scale assessment
+    Predicted: 'Braden scale assessment'
+    Gold:      'Performed'
+
+  [199] ID 26: Delirium symptoms
+    Predicted: 'advanced dementia symptoms'
+    Gold:      'confusion and disorientation'
+
+  [138] ID 26: Delirium symptoms
+    Predicted: 'delirium or acute change from their baseline mental state'
+    Gold:      'onset of delirium'
+
+  [114] ID 16: Braden scale assessment
+    Predicted: 'being monitored'
+    Gold:      'performed'
+
+  ... and 4 more
+
+
+--- HALLUCINATED VALUE (6 total) ---
+    Predicted text not found in transcript (but gold IS in transcript)
+
+  [41] ID 31: Secondary diagnosis
+    Predicted: 'Not mentioned'
+    Gold:      'hypoxemia or metabolic issue'
+
+  [206] ID 31: Secondary diagnosis
+    Predicted: 'no mention'
+    Gold:      'COPD'
+
+  [52] ID 162: Patient identification
+    Predicted: 'Not mentioned'
+    Gold:      '87-year-old male'
+
+  [55] ID 31: Secondary diagnosis
+    Predicted: 'Not mentioned'
+    Gold:      'autonomic dysregulation post-stroke'
+
+  [173] ID 127: Patient education
+    Predicted: 'Not mentioned'
+    Gold:      'supportive measures and ongoing monitoring'
+
+  ... and 1 more
+
+
+--- SEMANTIC MISMATCH (1 total) ---
+    Both pred and gold are interpretations, not literal extractions - format differs
+
+  [200] ID 23: Muscle contractures
+    Predicted: 'present'
+    Gold:      'Yes'
+
+
+--- OTHER VALUE ERROR (140 total) ---
+    Miscellaneous value mismatch
+
+  [41] ID 99: Urine odor
+    Predicted: 'Not mentioned'
+    Gold:      'foul'
+
+  [41] ID 116: Work of breathing
+    Predicted: 'Not mentioned'
+    Gold:      'Increased'
+
+  [14] ID 130: Cognitive status
+    Predicted: 'Disoriented'
+    Gold:      'Alert with general confusion and forgetfulness'
+
+  [139] ID 30: Nausea
+    Predicted: 'No'
+    Gold:      'Yes'
+
+  [76] ID 132: Joint deformity
+    Predicted: 'Present'
+    Gold:      'Mild'
+
+  ... and 135 more
+
+
+--- PARTIAL MATCH (MULTI_SELECT) (24 total) ---
+    Got some options right, missed/added others
+
+  [139] ID 148: Gastrointestinal symptoms
+    Predicted: ['vomiting']
+    Gold:      ['vomiting', 'nausea']
+    Matched: ['vomiting'], Missed: ['nausea'], Extra: []
+
+  [76] ID 3: Respiratory interventions
+    Predicted: ['raising the head of the bed', 'incentive spirometer usage']
+    Gold:      ['raising head of bed', 'incentive spirometer usage']
+    Matched: ['incentive spirometer usage'], Missed: ['raising head of bed'], Extra: ['raising the head of the bed']
+
+  [192] ID 3: Respiratory interventions
+    Predicted: ['raising head of bed', 'turn cough', 'deep breathe', 'incentive spirometer usage']
+    Gold:      ['turn cough', 'incentive spirometer usage', 'deep breathe']
+    Matched: ['incentive spirometer usage', 'turn cough', 'deep breathe'], Missed: [], Extra: ['raising head of bed']
+
+  [18] ID 139: Urine appearance
+    Predicted: ['cloudy', 'yellow']
+    Gold:      ['cloudy']
+    Matched: ['cloudy'], Missed: [], Extra: ['yellow']
+
+  [129] ID 122: Dental status
+    Predicted: ['Missing teeth', 'Dentures are in place', 'Oral care performed']
+    Gold:      ['Missing teeth', 'Denture care', 'Upper dentures', 'Lower dentures']
+    Matched: ['missing teeth'], Missed: ['denture care', 'upper dentures', 'lower dentures'], Extra: ['dentures are in place', 'oral care performed']
+
+  ... and 19 more
+
+
+--- WRONG OPTION (valid but incorrect) (15 total) ---
+    Chose valid schema option that wasn't in gold
+
+  [162] ID 3: Respiratory interventions
+    Predicted: ['raising head of bed']
+    Gold:      incentive spirometer usage
+
+  [147] ID 125: Sensory symptoms
+    Predicted: ['Numbness and tingling in right upper extremity']
+    Gold:      right upper extremity numbness and tingling
+
+  [125] ID 157: Bowel movement description
+    Predicted: ['formed', 'brown']
+    Gold:      color: brown
+
+  [70] ID 84: Abdomen exam
+    Predicted: []
+    Gold:      tender
+
+  [19] ID 165: Breath sounds
+    Predicted: []
+    Gold:      clear
+
+  ... and 10 more
+
+
+--- HALLUCINATED OBSERVATIONS (1309 total) ---
+    Model predicted an observation ID that exists in schema but wasn't in gold
+
+  Most common (top 15):
+    33x  ID 146: Patient position
+    29x  ID 117: Patient safety
+    28x  ID 116: Work of breathing
+    24x  ID 107: Fall risk identification
+    23x  ID 92: Patient weight
+    21x  ID 13: Breathing pattern
+    20x  ID 127: Patient education
+    20x  ID 79: Feeding tube status
+    20x  ID 65: Fluid restriction
+    19x  ID 32: Constipation episode
+    19x  ID 36: Gastrointestinal status
+    19x  ID 67: Dyspnea
+    18x  ID 110: Glasgow coma score - best verbal response
+    17x  ID 126: Patient height
+    16x  ID 71: Vomiting
+
+
+--- MISSED OBSERVATIONS (556 total) ---
+    Gold observations that the model didn't predict at all
+
+  Most common (top 15):
+    27x  ID 178: Oxygen saturation unit
+    21x  ID 148: Gastrointestinal symptoms
+    20x  ID 31: Secondary diagnosis
+    19x  ID 130: Cognitive status
+    16x  ID 40: Orientation
+    15x  ID 180: Heart rate unit
+    13x  ID 189: Oxygen flow rate unit
+    13x  ID 89: Mobility
+    12x  ID 78: History of falls
+    11x  ID 120: Fall risk assessment
+    11x  ID 0: Broset violence checklist - confusion
+    10x  ID 113: Bed position
+    10x  ID 136: Respiratory equipment
+    10x  ID 164: Level of assistance
+    10x  ID 93: Oxygen delivery device
+
+======================================================================
+
+Full error details saved to: predictions_20260202_203044_errors.json

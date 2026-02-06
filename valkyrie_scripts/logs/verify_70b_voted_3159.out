@@ -1,0 +1,269 @@
+========================================================================
+Job started on cn7 at Thu Feb  5 06:48:40 AM UTC 2026
+Job ID: 3159
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+==============================================
+Verification Pass with Llama-3.3-70B-Instruct
+Input: SC-Voted Predictions
+==============================================
+Input: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_011858/dev_BGE_top60_hybrid0.6_enhanced/post_processing/voted_predictions_sc123.json
+Model: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Output: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_011858/dev_BGE_top60_hybrid0.6_enhanced/post_processing/verified_voted_predictions_70b.json
+
+Initializing local model: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Loading verification model from /data/shared/models/llama/Llama-3.3-70B-Instruct
+Verification model loaded (device_map=auto)
+
+============================================================
+VERIFICATION PASS
+============================================================
+Predictions: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_011858/dev_BGE_top60_hybrid0.6_enhanced/post_processing/voted_predictions_sc123.json
+Data: /data/projects/mtootooni_01/SharedTaskCompetition/Data/dev.jsonl
+Verifier model: Llama-3.3-70B-Instruct
+Mode: Transcript-level
+Backend: local
+
+    REMOVED: ID 77 - Memory status = Impaired
+    REMOVED: ID 124 - General physical exam = within normal limits
+    REMOVED: ID 148 - Gastrointestinal symptoms = ['no symptoms']
+    REMOVED: ID 67 - Dyspnea = None
+    REMOVED: ID 73 - Urine output = 0
+    REMOVED: ID 175 - Activity level = walks occasionally
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 65 - Fluid restriction = No
+    REMOVED: ID 132 - Joint deformity = Mild
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 95 - Peripheral IV site condition = Redness
+    REMOVED: ID 151 - Edema = Generalized edema
+    REMOVED: ID 145 - Gait and transferring = Dependent
+    REMOVED: ID 67 - Dyspnea = Severe
+    REMOVED: ID 21 - Ambulatory aid = walker
+    REMOVED: ID 51 - Pain severity = 10 out of 10
+    REMOVED: ID 90 - Glasgow coma score - best motor response = no response
+    REMOVED: ID 164 - Level of assistance = moderate assist
+    REMOVED: ID 123 - Friction and shear = Problem
+    REMOVED: ID 146 - Patient position = lying
+    REMOVED: ID 38 - Use of accessory muscles = Yes
+    REMOVED: ID 41 - Speech clarity = unable to speak
+    REMOVED: ID 13 - Breathing pattern = ['labored']
+    REMOVED: ID 176 - Pressure injury stage = Stage 3
+    REMOVED: ID 86 - Assistance with personal hygiene = Dependent
+    REMOVED: ID 142 - Orthotic device use = Yes
+    REMOVED: ID 63 - Chest expansion = unequal
+    REMOVED: ID 124 - General physical exam = within defined limits
+    REMOVED: ID 150 - Behavior = Agitated and combative
+    REMOVED: ID 3 - Respiratory interventions = ['raising head of bed']
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 144 - Urinary stone = Present
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 13 - Breathing pattern = ['nonlabored', 'shallow']
+    REMOVED: ID 48 - Clinician notification = Yes
+    REMOVED: ID 55 - Mean arterial pressure (MAP) = 90
+    REMOVED: ID 116 - Work of breathing = Increased
+    REMOVED: ID 105 - Catheter condition = Intact
+    REMOVED: ID 125 - Sensory symptoms = ['Numbness and tingling in upper extremities', 'Numbness and tingling in lower extremities']
+    REMOVED: ID 173 - Tracheostomy status = Absent
+    REMOVED: ID 15 - Blood pressure location = left arm
+    REMOVED: ID 34 - Pulse oximetry = 95
+    REMOVED: ID 146 - Patient position = sitting
+    REMOVED: ID 32 - Constipation episode = No
+    REMOVED: ID 127 - Patient education = Cardiovascular system
+    REMOVED: ID 49 - Peripheral pulses = weak
+    REMOVED: ID 1 - Heart sounds = murmurs
+    REMOVED: ID 17 - Cardiac rhythm = Normal sinus rhythm
+    REMOVED: ID 98 - Intravenous therapy = Yes
+    REMOVED: ID 117 - Patient safety = Yes
+    REMOVED: ID 162 - Patient identification = John Doe
+    REMOVED: ID 128 - Bowel sounds = present in all quadrants
+    REMOVED: ID 21 - Ambulatory aid = walker
+    REMOVED: ID 118 - Patient safety education = Yes
+    REMOVED: ID 149 - Skin condition = ['dry', 'flaky']
+    REMOVED: ID 184 - Mean arterial pressure (MAP) unit = mmHg
+    REMOVED: ID 95 - Peripheral IV site condition = Intact
+    REMOVED: ID 74 - Blood pressure method = automatic
+    REMOVED: ID 167 - Pain description = mild
+    REMOVED: ID 168 - Heart rate source = monitor
+    REMOVED: ID 134 - Diarrhea episode = None
+    REMOVED: ID 121 - Seizure activity = None
+    REMOVED: ID 33 - Heart rate = 80
+    REMOVED: ID 180 - Heart rate unit = bpm
+    REMOVED: ID 69 - Patient belongings = glasses
+    REMOVED: ID 71 - Vomiting = No
+    REMOVED: ID 45 - Pitting edema = 1+
+    REMOVED: ID 139 - Urine appearance = ['clear', 'yellow']
+    REMOVED: ID 86 - Assistance with personal hygiene = Independent
+    REMOVED: ID 181 - Pulse oximetry unit = %
+    REMOVED: ID 138 - Pulse = 60
+    REMOVED: ID 30 - Nausea = No
+    REMOVED: ID 79 - Feeding tube status = Present
+    REMOVED: ID 182 - Respirations unit = breaths per minute
+    REMOVED: ID 65 - Fluid restriction = Yes
+    REMOVED: ID 176 - Pressure injury stage = Stage 1
+    REMOVED: ID 92 - Patient weight = 70
+    REMOVED: ID 67 - Dyspnea = Moderate
+    REMOVED: ID 65 - Fluid restriction = Yes
+    REMOVED: ID 25 - Nutrition status = inadequate
+    REMOVED: ID 51 - Pain severity = 4 out of 10
+    REMOVED: ID 45 - Pitting edema = 1+
+    REMOVED: ID 109 - Assistance with toileting = none
+    REMOVED: ID 107 - Fall risk identification = Medium
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 171 - Repositioning = Completed
+    REMOVED: ID 134 - Diarrhea episode = Frequent
+    REMOVED: ID 116 - Work of breathing = Increased
+    REMOVED: ID 173 - Tracheostomy status = Present
+    REMOVED: ID 130 - Cognitive status = Disoriented to time
+    REMOVED: ID 99 - Urine odor = foul
+    REMOVED: ID 109 - Assistance with toileting = none
+    REMOVED: ID 129 - Incontinence status = incontinent
+    REMOVED: ID 6 - Weightbearing status = ['partial weightbearing']
+    REMOVED: ID 10 - Oxygen saturation = None
+    REMOVED: ID 71 - Vomiting = No
+    REMOVED: ID 73 - Urine output = 0
+    REMOVED: ID 116 - Work of breathing = Increased
+    REMOVED: ID 67 - Dyspnea = Moderate
+    REMOVED: ID 65 - Fluid restriction = Yes
+    REMOVED: ID 65 - Fluid restriction = Yes
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 177 - Urinary symptoms = ['difficulty urinating', 'urgency', 'urine frequency']
+    REMOVED: ID 78 - History of falls = Yes
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 147 - Swallowing function = Difficulty
+    REMOVED: ID 25 - Nutrition status = inadequate
+    REMOVED: ID 72 - Respirations = 24
+    REMOVED: ID 165 - Breath sounds = []
+    REMOVED: ID 170 - Cough description = productive cough
+    REMOVED: ID 65 - Fluid restriction = No
+    REMOVED: ID 33 - Heart rate = None
+    REMOVED: ID 168 - Heart rate source = monitor
+    REMOVED: ID 59 - IV fluid type and rate = None
+    REMOVED: ID 134 - Diarrhea episode = None
+    REMOVED: ID 130 - Cognitive status = None
+    REMOVED: ID 79 - Feeding tube status = None
+    REMOVED: ID 135 - Glasgow coma score - eye opening = None
+    REMOVED: ID 30 - Nausea = None
+    REMOVED: ID 36 - Gastrointestinal status = None
+    REMOVED: ID 71 - Vomiting = None
+    REMOVED: ID 42 - Toileting needs = None
+    REMOVED: ID 174 - Bladder scan volume = None
+    REMOVED: ID 82 - Central line site condition = None
+    REMOVED: ID 140 - Nasal discharge = None
+    REMOVED: ID 41 - Speech clarity = None
+    REMOVED: ID 116 - Work of breathing = None
+    REMOVED: ID 190 - Bladder scan volume unit = None
+    REMOVED: ID 69 - Patient belongings = None
+    REMOVED: ID 67 - Dyspnea = None
+    REMOVED: ID 92 - Patient weight = None
+    REMOVED: ID 128 - Bowel sounds = None
+    REMOVED: ID 25 - Nutrition status = None
+    REMOVED: ID 52 - Gas passage = None
+    REMOVED: ID 58 - Capillary refill = None
+    REMOVED: ID 51 - Pain severity = None
+    REMOVED: ID 77 - Memory status = None
+    REMOVED: ID 162 - Patient identification = None
+    REMOVED: ID 103 - Stool consistency = None
+    REMOVED: ID 7 - Oral mucosa status = None
+    REMOVED: ID 148 - Gastrointestinal symptoms = None
+    REMOVED: ID 180 - Heart rate unit = None
+    REMOVED: ID 173 - Tracheostomy status = None
+    REMOVED: ID 126 - Patient height = None
+    REMOVED: ID 5 - Stoma appearance = None
+    REMOVED: ID 95 - Peripheral IV site condition = None
+    REMOVED: ID 122 - Dental status = None
+    REMOVED: ID 61 - Perineal edema = None
+    REMOVED: ID 192 - Emesis volume unit = None
+    REMOVED: ID 21 - Ambulatory aid = None
+    REMOVED: ID 20 - Suprapubic tenderness = None
+    REMOVED: ID 167 - Pain description = None
+    REMOVED: ID 53 - Medications = None
+    REMOVED: ID 15 - Blood pressure location = right arm
+    REMOVED: ID 144 - Urinary stone = Present
+    REMOVED: ID 29 - Pain management = improve oxygenation and ease the breathing effort
+    REMOVED: ID 150 - Behavior = Calm and cooperative
+    REMOVED: ID 173 - Tracheostomy status = Absent
+    REMOVED: ID 50 - Pain goal = 4
+    REMOVED: ID 147 - Swallowing function = Normal
+    REMOVED: ID 131 - Gastrointestinal interventions = normal saline
+    REMOVED: ID 91 - PO intake = normal
+    REMOVED: ID 105 - Catheter condition = Intact
+    REMOVED: ID 98 - Intravenous therapy = Yes
+    REMOVED: ID 79 - Feeding tube status = Present
+    REMOVED: ID 152 - Nasogastric tube status = Inserted
+    REMOVED: ID 63 - Chest expansion = equal
+    REMOVED: ID 47 - Tube feeding type = normal
+    REMOVED: ID 149 - Skin condition = ['dry', 'intact']
+    REMOVED: ID 48 - Clinician notification = Yes
+    REMOVED: ID 53 - Medications = normal
+    REMOVED: ID 81 - Bed safety = Ensured
+    REMOVED: ID 185 - PO intake unit = mL
+    REMOVED: ID 39 - Communication sensory = communication sensory 1
+    REMOVED: ID 76 - Pupil response = Equal and reactive bilaterally
+    REMOVED: ID 65 - Fluid restriction = Yes
+    REMOVED: ID 117 - Patient safety = No
+    REMOVED: ID 33 - Heart rate = None
+    REMOVED: ID 11 - Blood pressure = None
+    REMOVED: ID 114 - Caloric intake = 0
+    REMOVED: ID 191 - Caloric intake unit = kcal
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 82 - Central line site condition = Intact
+    REMOVED: ID 88 - Urine color = yellow
+    REMOVED: ID 71 - Vomiting = No
+    REMOVED: ID 146 - Patient position = lying
+    REMOVED: ID 6 - Weightbearing status = ['full weightbearing']
+    REMOVED: ID 171 - Repositioning = Completed
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 63 - Chest expansion = unequal
+    REMOVED: ID 59 - IV fluid type and rate = 
+    REMOVED: ID 151 - Edema = +1 edema
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 116 - Work of breathing = Increased
+    REMOVED: ID 151 - Edema = +1 edema
+    REMOVED: ID 81 - Bed safety = Ensured
+    REMOVED: ID 117 - Patient safety = Yes
+    REMOVED: ID 118 - Patient safety education = Yes
+    REMOVED: ID 120 - Fall risk assessment = Morse fall risk assessment
+    REMOVED: ID 111 - Fall risk total = 0
+    REMOVED: ID 107 - Fall risk identification = Low
+    REMOVED: ID 129 - Incontinence status = incontinent
+    REMOVED: ID 147 - Swallowing function = Normal
+    REMOVED: ID 49 - Peripheral pulses = peripheral vascular disease
+    REMOVED: ID 26 - Delirium symptoms = delirium from an infection or metabolic imbalance
+    REMOVED: ID 148 - Gastrointestinal symptoms = ['constipation']
+    REMOVED: ID 89 - Mobility = Limited
+    REMOVED: ID 67 - Dyspnea = Mild
+    REMOVED: ID 130 - Cognitive status = Alert with general confusion and forgetfulness
+    REMOVED: ID 81 - Bed safety = Ensured
+    REMOVED: ID 77 - Memory status = Impaired
+    REMOVED: ID 117 - Patient safety = Yes
+    REMOVED: ID 116 - Work of breathing = Increased
+    REMOVED: ID 65 - Fluid restriction = No
+    REMOVED: ID 136 - Respiratory equipment = incentive spirometer
+    REMOVED: ID 78 - History of falls = Yes
+    REMOVED: ID 107 - Fall risk identification = High
+    REMOVED: ID 130 - Cognitive status = Alert with general confusion and forgetfulness
+    REMOVED: ID 81 - Bed safety = Ensured
+    REMOVED: ID 181 - Pulse oximetry unit = %
+
+============================================================
+VERIFICATION SUMMARY
+============================================================
+Total observations: 1439
+Kept: 1218 (84.6%)
+Removed: 221 (15.4%)
+
+Saved verified predictions to: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_011858/dev_BGE_top60_hybrid0.6_enhanced/post_processing/verified_voted_predictions_70b.json
+Created submission file: /data/projects/mtootooni_01/SharedTaskCompetition/synur_pipeline/outputs/Llama-3.3-70B-Instruct+sft_20260204_011858/dev_BGE_top60_hybrid0.6_enhanced/post_processing/verified_voted_submission_70b.jsonl
+
+============================================================
+EVALUATION RESULTS
+============================================================
+Precision: 0.8421
+Recall:    0.7748
+F1 Score:  0.8070
+
+========================================================================
+Job finished at Thu Feb  5 07:08:25 AM UTC 2026
+========================================================================

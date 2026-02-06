@@ -1,0 +1,15 @@
+{
+  "base_model": "/data/shared/models/llama/Llama-3.3-70B-Instruct",
+  "epochs": 3,
+  "batch_size": 1,
+  "gradient_accumulation": 8,
+  "effective_batch_size": 8,
+  "learning_rate": 1e-05,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "max_seq_length": 4096,
+  "num_examples": 223,
+  "quantization": "4bit",
+  "timestamp": "20260204_102723"
+}

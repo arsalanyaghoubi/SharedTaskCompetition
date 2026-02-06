@@ -1,0 +1,61 @@
+========================================================================
+Job started on cn7 at Fri Feb  6 04:21:20 AM UTC 2026
+Job ID: 3171
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+==============================================
+Llama-3.3-70B-Instruct (Base) on TEST set
+==============================================
+Model: /data/shared/models/llama/Llama-3.3-70B-Instruct
+
+============================================================
+SYNUR Extraction Pipeline
+Model: Llama-3.3-70B-Instruct
+Model path: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Quantization: 4-bit (NF4)
+Embedding: /data/projects/mtootooni_01/SharedTaskCompetition/models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Dense only
+Data: test
+Temperature: 0.0
+Segmentation: Simple rules
+============================================================
+Initializing LLM
+Loading model from /data/shared/models/llama/Llama-3.3-70B-Instruct
+  Using 4-bit quantization (NF4)
+Model loaded (device_map=auto)
+Using model: gpt-4o-mini
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/SYNUR_testset_input.jsonl.
+Loaded 199 transcripts.
+
+Processing transcripts with gpt-4o-mini.
+Prompt mode: Enhanced.
+
+============================================================
+SCHEMA VALIDATION RESULTS
+============================================================
+Total observations processed: 1975
+- Structural invalid (missing id/value): 67
+- Invalid schema ID (hallucinated): 0
+- Case mismatches fixed: 1
+- Invalid enum values removed: 44
+Valid observations retained: 1864
+
+============================================================
+RESULTS
+============================================================
+Official evaluation failed - check eval script output above
+
+Files saved to: Llama-3.3-70B-Instruct/test_BGE_top60_enhanced/baseline/run_20260206_054810/
+  predictions.json   (for error analysis)
+  submission.jsonl   (official format)
+  summary.json       (config + metrics)
+
+========================================================================
+Job finished at Fri Feb  6 05:48:11 AM UTC 2026
+========================================================================

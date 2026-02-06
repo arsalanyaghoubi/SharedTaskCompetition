@@ -1,0 +1,81 @@
+========================================================================
+Job started on cn3 at Wed Feb  4 10:30:25 AM UTC 2026
+Job ID: 3142
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using 3-epoch fine-tuned model: sft_output_70b/sft_20260204_011858/final
+WITH LLM SEGMENTATION
+
+Running 70B SFT (3-epoch) + LLM-seg inference on dev set
+============================================================
+SYNUR Extraction Pipeline
+Model: final
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: dev
+Segmentation: LLM
+============================================================
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+Loaded PEFT model with base: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Model loaded (device_map=auto)
+Using model: llama-3.3-70b-sft-3ep-llmseg
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/dev.jsonl.
+Loaded 101 transcripts.
+
+Processing transcripts with llama-3.3-70b-sft-3ep-llmseg.
+Prompt mode: Enhanced.
+  [WARNING] JSON parse error: Unterminated string starting at: line 574 column 13 (char 13525)
+  [WARNING] Raw response: {
+  "observations": [
+    {
+      "id": "184",
+      "value_type": "SINGLE_SELECT",
+      "name": "Mean arterial pressure (MAP) unit",
+      "value": "mmHg"
+    },
+    {
+      "id": "82",
+      "value_type": "SINGLE_SELECT",
+      "name": "Central line site condition",
+      "value": "Intact"
+    },
+    {
+      "id": "184",
+      "value_type": "SINGLE_SELECT",
+      "name": "Mean arterial pressure (MAP) unit",
+      "value": "mmHg"
+    },
+    {
+      "id": "184",
+      "value_type": "SINGLE_SELE...
+
+[INFO] Filtered 6 malformed observations (missing id/value)
+[INFO] 1673/1679 observations retained for evaluation
+
+============================================================
+RESULTS
+============================================================
+  Precision: 0.6321
+  Recall:    0.7986
+  F1:        0.7057  (70.6%)
+
+Files saved to: final/dev_BGE_top60_hybrid0.6_enhanced/
+  predictions_20260204_134618.json  (for error analysis)
+  submission_20260204_134618.jsonl  (official format)
+  summary_20260204_134618.json      (config + metrics)
+
+========================================================================
+Job finished at Wed Feb  4 01:46:19 PM UTC 2026
+========================================================================

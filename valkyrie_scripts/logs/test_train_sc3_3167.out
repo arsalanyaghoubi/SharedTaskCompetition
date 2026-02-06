@@ -1,0 +1,95 @@
+========================================================================
+TEST SET INFERENCE - Train-Only SFT Model (3ep) - SC Run 3/3 (Seed 3)
+Job started on cn8 at Thu Feb  5 11:07:02 PM UTC 2026
+Job ID: 3167
+GPU(s) allocated: 0
+========================================================================
+NVIDIA H200 NVL, 143771 MiB
+
+Using Train-only fine-tuned model: sft_output_70b/sft_20260204_011858/final
+Temperature: 0.3, Seed: 3
+Data: TEST SET
+
+============================================================
+SYNUR Extraction Pipeline
+Model: Llama-3.3-70B-Instruct+sft_20260204_011858
+Model path: sft_output_70b/sft_20260204_011858/final
+Quantization: 4-bit (NF4)
+Embedding: ../models/bge-base-en-v1.5
+Mode: Zero-shot
+Prompts: Enhanced
+Top-N schema rows: 60
+Retrieval: Hybrid (BM25 + dense, alpha=0.6)
+Data: test
+Temperature: 0.3
+Seed: 3
+Segmentation: Simple rules
+============================================================
+
+Random seed set to 3
+Initializing LLM
+Loading model from sft_output_70b/sft_20260204_011858/final
+  Using 4-bit quantization (NF4)
+Loaded PEFT model with base: /data/shared/models/llama/Llama-3.3-70B-Instruct
+Model loaded (device_map=auto)
+Using model: llama-70b-sft-train-sc3
+Loading schema from /data/projects/mtootooni_01/SharedTaskCompetition/Data/synur_schema.json
+  Using HYBRID search (alpha=0.6)
+  Loaded 193 schema rows.
+Loading evaluation data from /data/projects/mtootooni_01/SharedTaskCompetition/Data/SYNUR_testset_input.jsonl.
+Loaded 199 transcripts.
+
+Processing transcripts with llama-70b-sft-train-sc3.
+Prompt mode: Enhanced.
+  [WARNING] JSON parse error: Unterminated string starting at: line 648 column 16 (char 14736)
+  [WARNING] Raw response: {
+  "observations": [
+    {
+      "id": "148",
+      "value_type": "MULTI_SELECT",
+      "name": "Gastrointestinal symptoms",
+      "value": [
+        "diarrhea",
+        "nausea"
+      ]
+    },
+    {
+      "id": "177",
+      "value_type": "SINGLE_SELECT",
+      "name": "Activity level",
+      "value": "walks occasionally"
+    },
+    {
+      "id": "2",
+      "value_type": "SINGLE_SELECT",
+      "name": "Sensory perception",
+      "value": "Slightly limited"
+    },
+    {
+      "id": "95",
+      "...
+
+============================================================
+SCHEMA VALIDATION RESULTS
+============================================================
+Total observations processed: 2364
+- Structural invalid (missing id/value): 126
+- Invalid schema ID (hallucinated): 0
+- Case mismatches fixed: 0
+- Invalid enum values removed: 75
+Valid observations retained: 2163
+
+============================================================
+RESULTS
+============================================================
+Official evaluation failed - check eval script output above
+
+Files saved to: Llama-3.3-70B-Instruct+sft_20260204_011858/test_BGE_top60_hybrid0.6_enhanced/self_consistency/run_20260206_012940/
+  predictions.json   (for error analysis)
+  submission.jsonl   (official format)
+  summary.json       (config + metrics)
+
+========================================================================
+Job completed at Fri Feb  6 01:29:41 AM UTC 2026
+Exit code: 0
+========================================================================
