@@ -28,5 +28,9 @@ synur_pipeline/sft_output*/*/final/*.bin
 # Outputs
 synur_pipeline/outputs/logs/
 
-# Private notes
+# Private
 valkyrie-readme.md
+Data/
+archived/
+valkyrie_scripts/
+figures/
